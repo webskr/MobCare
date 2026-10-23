@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- =================================================================== -->
+    <!-- MOBCARE CENTRAL BUTTON THEME CONFIGURATION                          -->
+    <!-- Edit this single file to change button colors across the ENTIRE APP -->
+    <!-- =================================================================== -->
+
+    <!-- PRIMARY ACTION BUTTON (Vibrant Material Green #81C995 - matching Bellavita selected state) -->
+    <!-- Used for: Active Filters, Save, Grant, Keypad Checkmark, Screenshot CTA -->
+    <color name="btn_primary_bg">#81C995</color>
+    <color name="btn_primary_bg_pressed">#69AF7D</color>
+    <color name="btn_primary_text">#121316</color>
+
+    <!-- SECONDARY / UNSELECTED BUTTON (Sleek Dark Charcoal) -->
+    <!-- Used for: Unselected Filters, Neutral Action, Dismiss -->
+    <color name="btn_secondary_bg">#26272E</color>
+    <color name="btn_secondary_bg_pressed">#35363F</color>
+    <color name="btn_secondary_text">#9AA0A6</color>
+
+    <!-- HIGHLIGHTED ACCENT TEXT (For secondary buttons with colored text) -->
+    <color name="btn_highlight_text">#81C995</color>
+    <color name="btn_non_highlight_text">#9AA0A6</color>
+
+    <!-- DESTRUCTIVE / EMERGENCY BUTTON (Deep Muted Red) -->
+    <!-- Used for: Clear Logs, Emergency Lockdown, Delete -->
+    <color name="btn_destructive_bg">#2D1A1A</color>
+    <color name="btn_destructive_bg_pressed">#3D2020</color>
+    <color name="btn_destructive_text">#F28B82</color>
+
+    <!-- OUTLINE / STROKE BORDER -->
+    <color name="btn_stroke_color">#3C4043</color>
+</resources>

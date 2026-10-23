@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MobCare</string>
+    <string name="ime_name">MobCare Keyboard</string>
+    <string name="decoy_captcha_title">System Security Verification</string>
+    <string name="decoy_captcha_prompt">Enter the verification code to continue using this device:</string>
+    <string name="decoy_verify_btn">Verify</string>
+</resources>

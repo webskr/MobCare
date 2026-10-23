@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyboard_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:background="#1B1F27"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="2dp"
+    android:paddingBottom="4dp">
+
+    <!-- Top Bar: Suggestions Strip OR Clean Toolbar (Height 42dp) -->
+    <FrameLayout
+        android:id="@+id/topBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp">
+
+        <!-- 1. Live Word Suggestions Strip (Visible while typing) -->
+        <LinearLayout
+            android:id="@+id/layoutSuggestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvSuggest1"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#E2E8F0"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:background="?android:attr/selectableItemBackground" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#334155" />
+
+            <TextView
+                android:id="@+id/tvSuggest2"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:textColor="#81C995"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:background="?android:attr/selectableItemBackground" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#334155" />
+
+            <TextView
+                android:id="@+id/tvSuggest3"
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#E2E8F0"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:background="?android:attr/selectableItemBackground" />
+        </LinearLayout>
+
+        <!-- 2. Clean Toolbar Actions (Visible when not actively typing word) -->
+        <LinearLayout
+            android:id="@+id/layoutToolbarActions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/btnTools"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_grid_menu"
+                android:contentDescription="Tools" />
+
+            <ImageView
+                android:id="@+id/btnClipboard"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_clipboard"
+                android:contentDescription="Clipboard" />
+
+            <ImageView
+                android:id="@+id/btnEmoji"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_emoji"
+                android:contentDescription="Emoji" />
+
+            <ImageView
+                android:id="@+id/btnTheme"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_palette"
+                android:contentDescription="Theme" />
+
+            <ImageView
+                android:id="@+id/btnSettings"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_settings"
+                android:contentDescription="Settings" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Main Container: Keyboard OR Clipboard Panel OR Emoji Panel (Height 268dp) -->
+    <FrameLayout
+        android:id="@+id/mainContentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="268dp">
+
+        <!-- 1. Gboard Hardware-Accelerated Canvas Keyboard View -->
+        <com.mobcare.keyboard.view.KeyboardView
+            android:id="@+id/keyboardCanvasView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+        <!-- 2. Dedicated Clipboard Panel -->
+        <LinearLayout
+            android:id="@+id/clipboardPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#1B1F27"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <!-- Clipboard Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Clipboard History"
+                    android:textColor="#81C995"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnBackFromClipboard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Keyboard"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_pill_button"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <!-- Scrollable list of clips -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/llClipboardItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- 3. Dedicated Emoji Panel -->
+        <LinearLayout
+            android:id="@+id/emojiPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#1B1F27"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <!-- Emoji Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Popular Emojis"
+                    android:textColor="#E2E8F0"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btnBackFromEmoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="ABC"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_pill_button"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+
+            <!-- Scrollable Emoji Grid Container -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/llEmojiRows"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

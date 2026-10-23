@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#121316"
+    android:gravity="center_horizontal"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="56dp"
+    android:paddingBottom="36dp">
+
+    <!-- Top Badge -->
+    <TextView
+        android:id="@+id/tvSentinelBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pill_button"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:text="BIOMETRIC SENTINEL"
+        android:textColor="#81C995"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Identity Verification"
+        android:textColor="#F1F3F4"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verifying device owner biometric profile against device security policy."
+        android:textColor="#9AA0A6"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:layout_marginBottom="36dp" />
+
+    <!-- Center Scanner Circle Frame (Honeypot Scanner) -->
+    <FrameLayout
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginBottom="28dp">
+
+        <!-- Outer Ring -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_pill_button" />
+
+        <!-- Inner Pulse Core -->
+        <LinearLayout
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/bg_pill_button">
+
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@android:drawable/ic_menu_camera"
+                app:tint="#8AB4F8"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/tvScannerStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scanning Face..."
+                android:textColor="#E8EAED"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Subtitle Hint -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Keep device upright and centered in front of your face."
+        android:textColor="#5F6368"
+        android:textSize="12sp"
+        android:layout_marginBottom="40dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Actions Row -->
+    <Button
+        android:id="@+id/btnSentinelDismiss"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Verifying (3s)..."
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:enabled="false"
+        android:backgroundTint="#26272E"
+        android:textColor="#9AA0A6"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnSentinelLockdown"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="Emergency Lockdown"
+        android:textSize="13sp"
+        android:backgroundTint="#2D1A1A"
+        android:textColor="#F28B82" />
+
+</LinearLayout>

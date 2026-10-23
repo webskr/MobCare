@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MobCare" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/btn_primary_bg</item>
+        <item name="colorPrimaryVariant">@color/btn_primary_bg_pressed</item>
+        <item name="colorOnPrimary">@color/btn_primary_text</item>
+        <item name="colorSecondary">@color/btn_primary_bg</item>
+        <item name="colorAccent">@color/btn_primary_bg</item>
+        <item name="colorButtonNormal">@color/btn_secondary_bg</item>
+        <item name="android:statusBarColor">#121316</item>
+        <item name="android:navigationBarColor">#121316</item>
+        <item name="android:windowBackground">#121316</item>
+    </style>
+</resources>

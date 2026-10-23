@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121316"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="28dp">
+
+    <ImageView
+        android:id="@+id/ivLockedAppIcon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Locked App" />
+
+    <TextView
+        android:id="@+id/tvLockedAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Application Protected"
+        android:textColor="#F1F3F4"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="28dp"
+        android:text="Enter security PIN to access application"
+        android:textColor="@color/btn_secondary_text"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/etGatePin"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_card_outlined"
+        android:gravity="center"
+        android:hint="••••"
+        android:inputType="numberPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#5F6368"
+        android:textSize="24sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGateUnlock"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="12dp"
+        app:cornerRadius="14dp"
+        app:backgroundTint="@color/btn_primary_bg"
+        android:text="Unlock Application"
+        android:textColor="@color/btn_primary_text"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGateExit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:cornerRadius="14dp"
+        app:backgroundTint="@color/btn_secondary_bg"
+        android:text="Exit to Home"
+        android:textColor="@color/btn_secondary_text"
+        android:textSize="14sp" />
+
+</LinearLayout>

