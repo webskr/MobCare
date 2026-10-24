@@ -399,16 +399,43 @@ class MobCareKeyboardService : InputMethodService(), KeyActionHandler {
 
     override fun onEnterPressed() {
         val curEditor = currentInputEditorInfo
-        val actionId = curEditor?.actionId ?: EditorInfo.IME_ACTION_UNSPECIFIED
+        val inputType = curEditor?.inputType ?: 0
         val imeOptions = curEditor?.imeOptions ?: 0
+
+        val inputClass = inputType and android.text.InputType.TYPE_MASK_CLASS
+        val isText = inputClass == android.text.InputType.TYPE_CLASS_TEXT
+        val isMultiLine = isText && (
+            (inputType and android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE) != 0 ||
+            (inputType and 0x00020000 /* TYPE_TEXT_FLAG_IME_MULTI_LINE */) != 0
+        )
+        val hasNoEnterAction = (imeOptions and EditorInfo.IME_FLAG_NO_ENTER_ACTION) != 0
+
+        val actionId = curEditor?.actionId ?: EditorInfo.IME_ACTION_UNSPECIFIED
         val action = if (actionId != EditorInfo.IME_ACTION_UNSPECIFIED) actionId else (imeOptions and EditorInfo.IME_MASK_ACTION)
 
-        if (action != EditorInfo.IME_ACTION_NONE && action != EditorInfo.IME_ACTION_UNSPECIFIED) {
+        val isNumericPinMode = keyboardCanvasView?.keyboard?.mode == com.mobcare.keyboard.model.KeyboardMode.NUMERIC_PIN
+
+        // Multiline fields must ALWAYS insert a new line unless an explicit single-tap action is configured
+        if (isMultiLine || hasNoEnterAction) {
+            if (!hasNoEnterAction && (action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_GO || action == EditorInfo.IME_ACTION_SEND)) {
+                currentInputConnection?.performEditorAction(action)
+            } else {
+                currentInputConnection?.commitText("\n", 1)
+            }
+        } else if (isNumericPinMode && action != EditorInfo.IME_ACTION_NONE && action != EditorInfo.IME_ACTION_UNSPECIFIED) {
             currentInputConnection?.performEditorAction(action)
+        } else if (action == EditorInfo.IME_ACTION_SEARCH || action == EditorInfo.IME_ACTION_GO || action == EditorInfo.IME_ACTION_NEXT || action == EditorInfo.IME_ACTION_SEND) {
+            currentInputConnection?.performEditorAction(action)
+        } else if (action == EditorInfo.IME_ACTION_DONE) {
+            if (isText && !isMultiLine) {
+                currentInputConnection?.performEditorAction(action)
+            } else {
+                currentInputConnection?.commitText("\n", 1)
+            }
         } else {
-            currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
-            currentInputConnection?.sendKeyEvent(KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER))
+            currentInputConnection?.commitText("\n", 1)
         }
+
         auditInterceptor.onEnterPressed(currentPackageName)
         currentWordBuffer.clear()
         updateSuggestions()
