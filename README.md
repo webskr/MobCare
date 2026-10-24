@@ -1,6 +1,10 @@
 <div align="center">
 
-# 🛡️ MobCare
+  <a href="https://github.com/webskr/MobCare">
+    <img src="assets/logo.png" width="124" height="124" alt="MobCare Logo" style="border-radius: 26px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);" />
+  </a>
+
+  <h1>🛡️ MobCare</h1>
 
 **Enterprise-Grade On-Device Security Sentinel, Tactical App Locker & Telemetry IME for Android**
 
