@@ -42,6 +42,37 @@ You can download and install MobCare directly onto your Android device:
 
 ---
 
+
+---
+
+## 🛡️ Google Play Protect Notice & Troubleshooting
+
+When installing MobCare directly via APK, Android's **Google Play Protect** may show a dialog stating *"Blocked by Play Protect"* or *"Unrecognized Developer"*.
+
+### ❓ Why does this happen?
+1. **Direct GitHub Release:** MobCare is distributed directly as an open-source APK from GitHub rather than through Google Play Store, so Google's automated scanners have not registered a commercial publisher certificate.
+2. **Advanced Security APIs:** MobCare utilizes native security mechanisms (Device Administrator for anti-uninstall, Accessibility Service for tactical app locking, and CameraX for unauthorized intruder capture) which trigger standard automated heuristics.
+3. **100% Safe & Transparent:** MobCare is fully open-source under GPLv3, contains **zero external trackers**, sends **no analytics to third parties**, and all code is publicly auditable.
+
+---
+
+### 📲 How to Install (Bypass Play Protect Warning)
+
+#### Method 1: One-Tap Bypass (Fastest)
+1. When the warning popup appears on your screen:
+2. Tap **"More details"** (or the small dropdown arrow).
+3. Tap **"Install anyway"**.
+4. The installation will complete immediately.
+
+#### Method 2: Temporarily Toggle Play Protect (If install is blocked)
+If your device settings completely prevent sideloading:
+1. Open the **Google Play Store** app.
+2. Tap your **Profile Icon** (top right corner).
+3. Select **Play Protect** ➔ Tap the **Settings Gear (⚙️)** at the top right.
+4. Toggle OFF **"Scan apps with Play Protect"**.
+5. Install `MobCare-v1.0.0.apk`.
+6. *(Optional)* You can toggle Play Protect back ON after installation.
+
 ## 🌟 Core Feature Highlights
 
 ### 1. 🛡️ Tactical App Locker Sentinel
