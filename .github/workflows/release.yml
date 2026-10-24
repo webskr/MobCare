@@ -1,0 +1,93 @@
+name: Build & Release APK
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Release Version (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Android Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant Execute Permission to Gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
+
+      - name: Prepare APK Asset
+        id: prepare_apk
+        run: |
+          VERSION="${{ github.event.inputs.version_name || github.ref_name }}"
+          if [ "$VERSION" = "main" ]; then
+            VERSION="v1.0.0"
+          fi
+          APK_DIR="app/build/outputs/apk/release"
+          APK_NAME="MobCare-${VERSION}.apk"
+          
+          if [ -f "$APK_DIR/app-release.apk" ]; then
+            cp "$APK_DIR/app-release.apk" "$APK_NAME"
+          elif [ -f "$APK_DIR/app-release-unsigned.apk" ]; then
+            cp "$APK_DIR/app-release-unsigned.apk" "$APK_NAME"
+          fi
+          
+          echo "apk_path=$APK_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Upload APK to Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MobCare-Release-APK
+          path: ${{ steps.prepare_apk.outputs.apk_path }}
+          retention-days: 30
+
+      - name: Publish Official GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+        with:
+          tag_name: ${{ steps.prepare_apk.outputs.version }}
+          name: "MobCare ${{ steps.prepare_apk.outputs.version }} Release"
+          draft: false
+          prerelease: false
+          files: ${{ steps.prepare_apk.outputs.apk_path }}
+          body: |
+            ### 🛡️ MobCare System Telemetry & Device Protection Sentinel (${{ steps.prepare_apk.outputs.version }})
+
+            Direct downloadable APK built automatically via GitHub Actions CI/CD.
+
+            #### 📦 Included Features:
+            - **Tactical App Locker Sentinel:** Segmented mode control, Master & Dedicated PIN protection, intruder trap trigger.
+            - **Native Telemetry Keyboard (IME):** QWERTY, Symbol tray, and dedicated 3x4 Numpad with `[ABC]` toggle and verified Enter newline fix.
+            - **Call & SMS Vault:** Anti-deletion persistent ledger for calls and incoming SMS.
+            - **Stealth Cloak:** Device Admin, fake crash screen decoy, and system diagnostics camouflage.
+            - **Silent Sentinel Gallery:** 3-column media vault with full-screen photo inspector.
+
+            #### 📲 Installation Instructions:
+            1. Download the `MobCare-${{ steps.prepare_apk.outputs.version }}.apk` below.
+            2. Tap the downloaded file to install on your Android device (Android 8.0+ / API 26+).
+            3. Grant necessary permissions (Accessibility, Notification Access, Overlay) to arm all security sentinels.

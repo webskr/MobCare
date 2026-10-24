@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ MobCare
+# ðŸ›¡ï¸ MobCare
 
 **Enterprise-Grade On-Device Security Sentinel, Tactical App Locker & Telemetry IME for Android**
 
@@ -9,6 +9,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](LICENSE)
 [![Security: 100% On--Device](https://img.shields.io/badge/Security-100%25%20On--Device-success?style=for-the-badge&logo=shield)](SECURITY.md)
 [![Privacy: Zero Trackers](https://img.shields.io/badge/Privacy-Zero%20Third--Party%20Trackers-red?style=for-the-badge)](SECURITY.md)
+[![Download APK](https://img.shields.io/github/v/release/webskr/MobCare?label=Download%20APK&logo=android&color=success&style=for-the-badge)](https://github.com/webskr/MobCare/releases/latest)
 
 <p align="center">
   <b>MobCare</b> is a high-performance, privacy-first Android security sentinel designed for personal device protection, physical tamper defense, honeypot intruder traps, and tactical application locking.
@@ -18,16 +19,16 @@
 
 ---
 
-## 🌟 Core Feature Highlights
+## ðŸŒŸ Core Feature Highlights
 
-### 1. 🛡️ Tactical App Locker Sentinel
+### 1. ðŸ›¡ï¸ Tactical App Locker Sentinel
 - **Dual Lock Strategy:**
   - **Always Protected:** Seamless PIN gate interception whenever selected applications are opened.
-  - **Intruder Trigger:** Honeypot mode — leaves apps unlocked until unauthorized tampering or failed verification occurs, then automatically seals designated sensitive apps.
-- **Dedicated PIN Gate:** Supports either the universal Master PIN or an app-locker dedicated 4–6 digit security PIN.
+  - **Intruder Trigger:** Honeypot mode â€” leaves apps unlocked until unauthorized tampering or failed verification occurs, then automatically seals designated sensitive apps.
+- **Dedicated PIN Gate:** Supports either the universal Master PIN or an app-locker dedicated 4â€“6 digit security PIN.
 - **Instant Session Pass:** Once verified, grants immediate single-session access without repeated friction.
 
-### 2. ⌨️ Native Telemetry Keyboard (IME)
+### 2. âŒ¨ï¸ Native Telemetry Keyboard (IME)
 - Built completely from scratch on the native Android `InputMethodService` framework.
 - **Dynamic 3-Tier Layout System:**
   - **QWERTY (Alpha):** Fluid typing with dedicated emoji drawer and voice integration.
@@ -36,52 +37,52 @@
 - **Per-App Context Intelligence:** Identifies active target packages and switches automatically into numeric mode for password and PIN fields.
 - **Zero Cloud Leakage:** All keystroke metrics stay strictly sandboxed in on-device volatile storage.
 
-### 3. 📞 Call & SMS Vault
+### 3. ðŸ“ž Call & SMS Vault
 - **Anti-Deletion Telecommunications Ledger:** Automatically captures call logs and SMS metadata before malicious actors or physical snoops can delete them.
 - **Full Call Intelligence:** Logs incoming, outgoing, missed calls, exact durations, and contact names.
 - **SMS Ledger:** Tracks sender, timestamp, and message snippets directly into a protected encrypted repository.
 
-### 4. 🕵️ Stealth Cloak & Anti-Tamper Engine
+### 4. ðŸ•µï¸ Stealth Cloak & Anti-Tamper Engine
 - **Anti-Uninstall Device Administrator:** Prevents unauthorized uninstallation from Android settings.
 - **Decoy Crash Screen:** Triggers a fake *"App has stopped"* system error dialog to confuse unauthorized intruders attempting to inspect MobCare.
 - **Diagnostics Camouflage:** Conceals MobCare behind a legitimate-looking device battery & RAM benchmark cloak.
 - **Front-Camera Intruder Capture:** Automatically snaps a silent front-facing photo upon failed unlock attempts.
 
-### 5. 📸 Silent Sentinel & Media Vault
+### 5. ðŸ“¸ Silent Sentinel & Media Vault
 - **Silent Screen Capture:** Takes discreet background screenshots upon trigger events.
 - **Encrypted Media Gallery:** High-performance 3-column media grid with full-screen pinch-to-zoom inspector for captured intruder photos.
 
 ---
 
-## 🏛️ System Architecture
+## ðŸ›ï¸ System Architecture
 
 ```
-                          ┌────────────────────────────────┐
-                          │         User Interface         │
-                          │   Material 3 Dark Charcoal UI  │
-                          └───────────────┬────────────────┘
-                                          │
-            ┌─────────────────────────────┼─────────────────────────────┐
-            │                             │                             │
-            ▼                             ▼                             ▼
-┌───────────────────────┐   ┌───────────────────────────┐   ┌───────────────────────┐
-│  App Locker Sentinel  │   │  MobCare Keyboard (IME)   │   │  Call & SMS Vault     │
-│  Foreground Monitor   │   │  Native InputMethodService│   │  ContentObserver Sync │
-└───────────┬───────────┘   └─────────────┬─────────────┘   └───────────┬───────────┘
-            │                             │                             │
-            └─────────────────────────────┼─────────────────────────────┘
-                                          │
-                                          ▼
-                         ┌─────────────────────────────────┐
-                         │      Local Storage Engine       │
-                         │  Jetpack Room + Encrypted Vault │
-                         │      (100% On-Device Only)      │
-                         └─────────────────────────────────┘
+                          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                          â”‚         User Interface         â”‚
+                          â”‚   Material 3 Dark Charcoal UI  â”‚
+                          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                                          â”‚
+            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+            â”‚                             â”‚                             â”‚
+            â–¼                             â–¼                             â–¼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  App Locker Sentinel  â”‚   â”‚  MobCare Keyboard (IME)   â”‚   â”‚  Call & SMS Vault     â”‚
+â”‚  Foreground Monitor   â”‚   â”‚  Native InputMethodServiceâ”‚   â”‚  ContentObserver Sync â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+            â”‚                             â”‚                             â”‚
+            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                                          â”‚
+                                          â–¼
+                         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                         â”‚      Local Storage Engine       â”‚
+                         â”‚  Jetpack Room + Encrypted Vault â”‚
+                         â”‚      (100% On-Device Only)      â”‚
+                         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
-## 🎨 Design Philosophy: Material 3 Charcoal & Emerald
+## ðŸŽ¨ Design Philosophy: Material 3 Charcoal & Emerald
 
 MobCare adheres to a clean, non-glaring dark aesthetic tailored for professional security tools:
 - **Base Surface:** Dark Charcoal (`#121316`) & Elevated Cards (`#1E1F24`)
@@ -92,7 +93,7 @@ MobCare adheres to a clean, non-glaring dark aesthetic tailored for professional
 
 ---
 
-## 🚀 Building & Running from Source
+## ðŸš€ Building & Running from Source
 
 MobCare can be compiled directly via Gradle without requiring Android Studio:
 
@@ -122,7 +123,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
-## 🔒 Security & Privacy Guarantee
+## ðŸ”’ Security & Privacy Guarantee
 
 MobCare is built on an uncompromising privacy foundation:
 1. **Zero External Servers:** MobCare has no third-party telemetry, analytics, crash-reporters, or advertising SDKs.
@@ -133,13 +134,13 @@ For security vulnerability disclosure, see [SECURITY.md](SECURITY.md).
 
 ---
 
-## 🤝 Contributing
+## ðŸ¤ Contributing
 
 We welcome community contributions! Please review our [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on our code style, pull request lifecycle, and development setup.
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
 MobCare is licensed under the **GNU General Public License v3.0 (GPLv3)**.  
 See the [LICENSE](LICENSE) file for complete terms and legal permissions.
