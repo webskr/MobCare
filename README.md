@@ -1,88 +1,99 @@
 <div align="center">
 
-# ðŸ›¡ï¸ MobCare
+# 🛡️ MobCare
 
 **Enterprise-Grade On-Device Security Sentinel, Tactical App Locker & Telemetry IME for Android**
 
 [![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B%20(API%2026%2B)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com)
 [![Language](https://img.shields.io/badge/Language-Kotlin%201.9-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](LICENSE)
-[![Security: 100% On--Device](https://img.shields.io/badge/Security-100%25%20On--Device-success?style=for-the-badge&logo=shield)](SECURITY.md)
+[![Security: 100% On-Device](https://img.shields.io/badge/Security-100%25%20On--Device-success?style=for-the-badge&logo=shield)](SECURITY.md)
 [![Privacy: Zero Trackers](https://img.shields.io/badge/Privacy-Zero%20Third--Party%20Trackers-red?style=for-the-badge)](SECURITY.md)
-[![Download APK](https://img.shields.io/github/v/release/webskr/MobCare?label=Download%20APK&logo=android&color=success&style=for-the-badge)](https://github.com/webskr/MobCare/releases/latest)
 
 <p align="center">
   <b>MobCare</b> is a high-performance, privacy-first Android security sentinel designed for personal device protection, physical tamper defense, honeypot intruder traps, and tactical application locking.
 </p>
 
+### 📥 [Download Latest Release APK (v1.0.0)](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk)
+*Ready-to-install signed APK built via GitHub Actions CI/CD*
+
+[View All Releases](https://github.com/webskr/MobCare/releases/latest) • [Report Issue](https://github.com/webskr/MobCare/issues) • [Security Policy](SECURITY.md)
+
 </div>
 
 ---
 
-## ðŸŒŸ Core Feature Highlights
+## 📲 Quick Download & Installation
 
-### 1. ðŸ›¡ï¸ Tactical App Locker Sentinel
+You can download and install MobCare directly onto your Android device:
+
+| File | Release | Architecture | Direct Download |
+| :--- | :--- | :--- | :--- |
+| **MobCare-v1.0.0.apk** | `v1.0.0` (Latest) | Universal (arm64-v8a, armeabi-v7a, x86_64) | [⬇️ **Download APK**](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk) |
+
+### How to Install:
+1. Tap the **[Download APK](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk)** button above on your Android phone.
+2. Open the downloaded `.apk` file and select **Install** *(if prompted, allow "Install from unknown sources" for your browser)*.
+3. Open MobCare and grant the requested Android permissions (Accessibility, Notification Listener, Display Over Other Apps) to activate the security sentinels.
+
+---
+
+## 🌟 Core Feature Highlights
+
+### 1. 🛡️ Tactical App Locker Sentinel
 - **Dual Lock Strategy:**
-  - **Always Protected:** Seamless PIN gate interception whenever selected applications are opened.
-  - **Intruder Trigger:** Honeypot mode â€” leaves apps unlocked until unauthorized tampering or failed verification occurs, then automatically seals designated sensitive apps.
-- **Dedicated PIN Gate:** Supports either the universal Master PIN or an app-locker dedicated 4â€“6 digit security PIN.
+  - **Always Protected:** Seamless PIN gate interception whenever protected applications are launched.
+  - **Intruder Trigger:** Honeypot mode — sensitive apps remain unlocked until an unauthorized physical tamper attempt occurs, after which they are instantly sealed.
+- **Dedicated PIN Gate:** Supports either the universal Master PIN or an app-specific 4-6 digit dedicated security PIN.
 - **Instant Session Pass:** Once verified, grants immediate single-session access without repeated friction.
 
-### 2. âŒ¨ï¸ Native Telemetry Keyboard (IME)
+### 2. ⌨️ Native Telemetry Keyboard (IME)
 - Built completely from scratch on the native Android `InputMethodService` framework.
 - **Dynamic 3-Tier Layout System:**
   - **QWERTY (Alpha):** Fluid typing with dedicated emoji drawer and voice integration.
   - **Symbols (`?123`):** Instant symbol tray with direct one-tap shortcut `[ 1234 ]` into numeric mode.
-  - **Dedicated 3x4 Numpad:** High-speed calculation & PIN entry layout with instant `[ ABC ]` return navigation.
+  - **Dedicated 3x4 Numpad:** High-speed PIN & calculation layout with instant `[ ABC ]` return navigation.
+- **Intelligent Newline Handling:** Properly dispatches `\n` in multiline editors (WhatsApp, Notes, SMS) without unexpectedly closing the keyboard.
 - **Per-App Context Intelligence:** Identifies active target packages and switches automatically into numeric mode for password and PIN fields.
-- **Zero Cloud Leakage:** All keystroke metrics stay strictly sandboxed in on-device volatile storage.
+- **Zero Cloud Leakage:** All keystroke telemetry stays strictly sandboxed in on-device volatile storage.
 
-### 3. ðŸ“ž Call & SMS Vault
+### 3. 📞 Call & SMS Vault
 - **Anti-Deletion Telecommunications Ledger:** Automatically captures call logs and SMS metadata before malicious actors or physical snoops can delete them.
 - **Full Call Intelligence:** Logs incoming, outgoing, missed calls, exact durations, and contact names.
 - **SMS Ledger:** Tracks sender, timestamp, and message snippets directly into a protected encrypted repository.
 
-### 4. ðŸ•µï¸ Stealth Cloak & Anti-Tamper Engine
+### 4. 🕵️ Stealth Cloak & Anti-Tamper Engine
 - **Anti-Uninstall Device Administrator:** Prevents unauthorized uninstallation from Android settings.
 - **Decoy Crash Screen:** Triggers a fake *"App has stopped"* system error dialog to confuse unauthorized intruders attempting to inspect MobCare.
 - **Diagnostics Camouflage:** Conceals MobCare behind a legitimate-looking device battery & RAM benchmark cloak.
 - **Front-Camera Intruder Capture:** Automatically snaps a silent front-facing photo upon failed unlock attempts.
 
-### 5. ðŸ“¸ Silent Sentinel & Media Vault
+### 5. 📸 Silent Sentinel & Media Vault
 - **Silent Screen Capture:** Takes discreet background screenshots upon trigger events.
 - **Encrypted Media Gallery:** High-performance 3-column media grid with full-screen pinch-to-zoom inspector for captured intruder photos.
 
 ---
 
-## ðŸ›ï¸ System Architecture
+## 🏛️ System Architecture
 
-```
-                          â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                          â”‚         User Interface         â”‚
-                          â”‚   Material 3 Dark Charcoal UI  â”‚
-                          â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                          â”‚
-            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-            â”‚                             â”‚                             â”‚
-            â–¼                             â–¼                             â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚  App Locker Sentinel  â”‚   â”‚  MobCare Keyboard (IME)   â”‚   â”‚  Call & SMS Vault     â”‚
-â”‚  Foreground Monitor   â”‚   â”‚  Native InputMethodServiceâ”‚   â”‚  ContentObserver Sync â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-            â”‚                             â”‚                             â”‚
-            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                          â”‚
-                                          â–¼
-                         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                         â”‚      Local Storage Engine       â”‚
-                         â”‚  Jetpack Room + Encrypted Vault â”‚
-                         â”‚      (100% On-Device Only)      â”‚
-                         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+```mermaid
+flowchart TD
+    UI[Material 3 Dark Charcoal UI] --> SentinelHub[MobCare Sentinel Hub]
+    
+    SentinelHub --> AL[App Locker Sentinel<br/>Foreground Monitor]
+    SentinelHub --> KB[MobCare Keyboard IME<br/>Native InputMethodService]
+    SentinelHub --> VAULT[Call & SMS Vault<br/>ContentObserver Sync]
+    SentinelHub --> STEALTH[Stealth Engine<br/>Device Admin & Decoy Cloak]
+    
+    AL --> DB[(Encrypted Local Vault<br/>100% On-Device Only)]
+    KB --> DB
+    VAULT --> DB
+    STEALTH --> DB
 ```
 
 ---
 
-## ðŸŽ¨ Design Philosophy: Material 3 Charcoal & Emerald
+## 🎨 Design Philosophy: Material 3 Charcoal & Emerald
 
 MobCare adheres to a clean, non-glaring dark aesthetic tailored for professional security tools:
 - **Base Surface:** Dark Charcoal (`#121316`) & Elevated Cards (`#1E1F24`)
@@ -93,7 +104,7 @@ MobCare adheres to a clean, non-glaring dark aesthetic tailored for professional
 
 ---
 
-## ðŸš€ Building & Running from Source
+## 🚀 Building & Running from Source
 
 MobCare can be compiled directly via Gradle without requiring Android Studio:
 
@@ -101,29 +112,24 @@ MobCare can be compiled directly via Gradle without requiring Android Studio:
 - **JDK 17** or higher
 - **Android SDK** (API 34 / Platform Tools)
 
-### Build Debug APK:
+### Build Debug / Release APK:
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/MobCare.git
+git clone https://github.com/webskr/MobCare.git
 cd MobCare
 
 # Verify and compile all Kotlin sources
 ./gradlew compileDebugSources
 
-# Assemble Debug APK
-./gradlew assembleDebug
+# Assemble Release APK (signed via debug config)
+./gradlew assembleRelease
 ```
 The output APK will be generated at:
-`app/build/outputs/apk/debug/app-debug.apk`
-
-### Install directly to connected device:
-```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
+`app/build/outputs/apk/release/app-release.apk`
 
 ---
 
-## ðŸ”’ Security & Privacy Guarantee
+## 🔒 Security & Privacy Guarantee
 
 MobCare is built on an uncompromising privacy foundation:
 1. **Zero External Servers:** MobCare has no third-party telemetry, analytics, crash-reporters, or advertising SDKs.
@@ -134,13 +140,13 @@ For security vulnerability disclosure, see [SECURITY.md](SECURITY.md).
 
 ---
 
-## ðŸ¤ Contributing
+## 🤝 Contributing
 
 We welcome community contributions! Please review our [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on our code style, pull request lifecycle, and development setup.
 
 ---
 
-## ðŸ“„ License
+## 📄 License
 
 MobCare is licensed under the **GNU General Public License v3.0 (GPLv3)**.  
 See the [LICENSE](LICENSE) file for complete terms and legal permissions.
