@@ -117,6 +117,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvMediumSecurityCardSub: TextView
     private lateinit var tvMediumSecurityCardBadge: TextView
 
+    // Section 6: Hardware & Deep OS Defense (14 Hard Layers)
+    private lateinit var tvHardActiveCount: TextView
+    private lateinit var cardHardSecurity: LinearLayout
+    private lateinit var tvHardSecurityCardSub: TextView
+    private lateinit var tvHardSecurityCardBadge: TextView
+
     // Bottom Nav
     private lateinit var navHome: LinearLayout
     private lateinit var navActivity: LinearLayout
@@ -199,6 +205,12 @@ class MainActivity : AppCompatActivity() {
         tvMediumSecurityCardSub = findViewById(R.id.tvMediumSecurityCardSub)
         tvMediumSecurityCardBadge = findViewById(R.id.tvMediumSecurityCardBadge)
 
+        // Section 6: Hardware & Deep OS Defense (14 Hard Layers)
+        tvHardActiveCount = findViewById(R.id.tvHardActiveCount)
+        cardHardSecurity = findViewById(R.id.cardHardSecurity)
+        tvHardSecurityCardSub = findViewById(R.id.tvHardSecurityCardSub)
+        tvHardSecurityCardBadge = findViewById(R.id.tvHardSecurityCardBadge)
+
         // Bottom nav
         navHome = findViewById(R.id.navHome)
         navActivity = findViewById(R.id.navActivity)
@@ -248,6 +260,10 @@ class MainActivity : AppCompatActivity() {
 
         cardMediumSecurity.setOnClickListener {
             startActivity(Intent(this, MediumSecurityActivity::class.java))
+        }
+
+        cardHardSecurity.setOnClickListener {
+            startActivity(Intent(this, HardSecurityActivity::class.java))
         }
 
         // Bottom Nav Actions
@@ -364,6 +380,12 @@ class MainActivity : AppCompatActivity() {
             tvMediumSecurityCardBadge.text = "16/16 ARMED"
             tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvMediumSecurityCardSub.text = "SQLite WAL, Hardware Keystore, Forensics & Decoy operational"
+
+            tvHardActiveCount.text = "14/14 active"
+            tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
+            tvHardSecurityCardBadge.text = "14/14 ARMED"
+            tvHardSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
+            tvHardSecurityCardSub.text = "Hardware sensors, Honeypot & Archive operational"
             return
         }
 
@@ -534,6 +556,12 @@ class MainActivity : AppCompatActivity() {
         tvMediumSecurityCardBadge.text = "16/16 ARMED"
         tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
         tvMediumSecurityCardSub.text = "SQLite WAL Engine • Hardware Keystore TEE • 16 Layers Armed"
+
+        tvHardActiveCount.text = "14/14 active"
+        tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
+        tvHardSecurityCardBadge.text = "14/14 ARMED"
+        tvHardSecurityCardBadge.setTextColor(Color.parseColor("#FDD663"))
+        tvHardSecurityCardSub.text = "Sensor Guard • Canary Honeypot • Cryptographic Archive"
 
         // Threats detected (intruder snaps + non-PlayStore sideloaded apps)
         var threatCount = intruderCount

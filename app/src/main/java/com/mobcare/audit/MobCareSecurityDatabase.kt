@@ -341,6 +341,39 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
         }
     }
 
+    fun getAllPackageEvents(limit: Int = 500): List<PackageEventRecord> {
+        val list = mutableListOf<PackageEventRecord>()
+        try {
+            val db = readableDatabase
+            val cursor = db.query(
+                TABLE_PACKAGES,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "$COL_PKG_EPOCH DESC",
+                limit.toString()
+            )
+            while (cursor.moveToNext()) {
+                list.add(
+                    PackageEventRecord(
+                        id = cursor.getString(cursor.getColumnIndexOrThrow(COL_PKG_ID)),
+                        packageName = cursor.getString(cursor.getColumnIndexOrThrow(COL_PKG_NAME)),
+                        appName = cursor.getString(cursor.getColumnIndexOrThrow(COL_PKG_APP)),
+                        action = cursor.getString(cursor.getColumnIndexOrThrow(COL_PKG_ACTION)),
+                        isSideload = cursor.getInt(cursor.getColumnIndexOrThrow(COL_PKG_SIDELOAD)) == 1,
+                        timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COL_PKG_TIME))
+                    )
+                )
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return list
+    }
+
     /**
      * Seamless backward compatibility: Migrates existing JSON records to SQLite so zero user logs are lost.
      */
@@ -388,3 +421,13 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
         }
     }
 }
+
+data class PackageEventRecord(
+    val id: String,
+    val packageName: String,
+    val appName: String,
+    val action: String,
+    val isSideload: Boolean,
+    val timestamp: String
+)
+

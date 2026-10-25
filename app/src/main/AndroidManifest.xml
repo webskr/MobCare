@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -1513,6 +1514,11 @@
         <!-- Advanced Security Layers (16 Medium Layers Matrix) Activity -->
         <activity
             android:name=".dashboard.MediumSecurityActivity"
+            android:exported="false" />
+
+        <!-- Hardware & Deep OS Defense (14 Hard Layers Matrix) Activity -->
+        <activity
+            android:name=".dashboard.HardSecurityActivity"
             android:exported="false" />
 
         <!-- App Locker Watchdog Service -->
