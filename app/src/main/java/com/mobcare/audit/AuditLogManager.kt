@@ -91,69 +91,25 @@ object AuditLogManager {
     }
 
     private fun saveRecord(context: Context, pkg: String, name: String, content: String, time: String) {
-        val recordJson = JSONObject().apply {
-            put("id", System.currentTimeMillis().toString())
-            put("packageName", pkg)
-            put("appName", name)
-            put("content", content)
-            put("timestamp", time)
-        }
-
         try {
-            val file = File(context.filesDir, FILE_NAME)
-            val jsonArray = if (file.exists()) {
-                val existing = file.readText()
-                if (existing.isNotEmpty()) JSONArray(existing) else JSONArray()
-            } else {
-                JSONArray()
-            }
-
-            val updatedArray = JSONArray()
-            updatedArray.put(recordJson)
-            for (i in 0 until jsonArray.length()) {
-                if (i < 200) {
-                    updatedArray.put(jsonArray.get(i))
-                }
-            }
-
-            file.writeText(updatedArray.toString())
+            MobCareSecurityDatabase.getInstance(context).insertAuditEvent(pkg, name, content, time)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     fun getLogs(context: Context): List<AuditRecord> {
-        val list = mutableListOf<AuditRecord>()
-        try {
-            val file = File(context.filesDir, FILE_NAME)
-            if (!file.exists()) return list
-            val content = file.readText()
-            if (content.isEmpty()) return list
-            val jsonArray = JSONArray(content)
-            for (i in 0 until jsonArray.length()) {
-                val obj = jsonArray.getJSONObject(i)
-                list.add(
-                    AuditRecord(
-                        id = obj.optString("id"),
-                        packageName = obj.optString("packageName"),
-                        appName = obj.optString("appName"),
-                        content = obj.optString("content"),
-                        timestamp = obj.optString("timestamp")
-                    )
-                )
-            }
+        return try {
+            MobCareSecurityDatabase.getInstance(context).getAllAuditEvents()
         } catch (e: Exception) {
             e.printStackTrace()
+            emptyList()
         }
-        return list
     }
 
     fun clearLogs(context: Context) {
         try {
-            val file = File(context.filesDir, FILE_NAME)
-            if (file.exists()) {
-                file.delete()
-            }
+            MobCareSecurityDatabase.getInstance(context).clearAuditEvents()
         } catch (e: Exception) {
             e.printStackTrace()
         }

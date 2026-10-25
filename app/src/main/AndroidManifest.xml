@@ -1510,6 +1510,11 @@
             android:name=".dashboard.CoreSecurityActivity"
             android:exported="false" />
 
+        <!-- Advanced Security Layers (16 Medium Layers Matrix) Activity -->
+        <activity
+            android:name=".dashboard.MediumSecurityActivity"
+            android:exported="false" />
+
         <!-- App Locker Watchdog Service -->
         <service
             android:name=".security.AppLockerWatchdogService"
