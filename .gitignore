@@ -66,3 +66,6 @@ Desktop.ini
 /scratch/
 screen_*.png
 *.hprof
+
+# Internal Security Blueprint (Private Local Only)
+CORE_SECURITY.md
