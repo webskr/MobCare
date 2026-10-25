@@ -161,9 +161,9 @@ class HardSecurityActivity : AppCompatActivity() {
     }
 
     private fun refreshAllLayers() {
-        // Posture Risk Score (Layer 19)
+        // Posture Risk Score
         val anomaly = HardSecurityEngine.calculateBehavioralRiskScore(this)
-        tvPostureSummary.text = "Heuristic Risk: ${anomaly.riskRating} (${anomaly.scoreOutOf100}/100) • All 14 Armed"
+        tvPostureSummary.text = "Heuristic Risk: ${anomaly.riskRating} (${anomaly.scoreOutOf100}/100) • Threat Heuristics Nominal"
         tvPostureSummary.setTextColor(
             if (anomaly.scoreOutOf100 >= 80) Color.parseColor("#81C995") else Color.parseColor("#FDD663")
         )

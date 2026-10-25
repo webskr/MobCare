@@ -787,6 +787,174 @@
                     android:background="#1C1E26"
                     android:layout_marginStart="68dp" />
 
+                <!-- Row: Call & SMS Vault -->
+                <LinearLayout
+                    android:id="@+id/cardCallSmsVault"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:layout_marginEnd="12dp">
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_feature_stealth"
+                            android:layout_gravity="center"
+                            android:tint="#7B9FD4" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Call &amp; SMS Vault"
+                            android:textColor="#ECEEF4"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:id="@+id/tvCallSmsCardSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Encrypted offline telecommunications ledger"
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCallSmsCardBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_yellow"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="SETUP"
+                        android:textColor="#FDD663"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1C1E26"
+                    android:layout_marginStart="68dp" />
+
+                <!-- Row: Web Intelligence Vault -->
+                <LinearLayout
+                    android:id="@+id/cardBrowserVault"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:layout_marginEnd="12dp">
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_activity"
+                            android:layout_gravity="center"
+                            android:tint="#7B9FD4" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Web Intelligence Vault"
+                            android:textColor="#ECEEF4"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:id="@+id/tvBrowserCardSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Browsing history &amp; search session mirror"
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvBrowserCardBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_yellow"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="SETUP"
+                        android:textColor="#FDD663"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1C1E26"
+                    android:layout_marginStart="68dp" />
+
                 <!-- Row: Encrypted Cloud Sync -->
                 <LinearLayout
                     android:id="@+id/cardCloudSync"
@@ -1103,311 +1271,7 @@
 
             </LinearLayout>
 
-            <!-- ========== SECTION 4: FOUNDATIONAL SECURITY (10 EASY LAYERS) ========== -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_section_card"
-                android:layout_marginBottom="16dp">
-
-                <!-- Section Header -->
-                <LinearLayout
-                    android:id="@+id/headerFoundational"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_shield_check"
-                        android:layout_marginEnd="10dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Foundational Security"
-                            android:textColor="#ECEEF4"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-medium" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10 Level-1 easy defense layers • 100% Offline"
-                            android:textColor="#7A7F8E"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvFoundationalActiveCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10/10 active"
-                        android:textColor="#81C995"
-                        android:textSize="11sp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_chevron_right"
-                        android:rotation="90" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#1C1E26" />
-
-                <!-- Row: Core Security Matrix (10 Easy Layers) -->
-                <LinearLayout
-                    android:id="@+id/cardCoreSecurity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:layout_marginEnd="12dp">
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_protection"
-                            android:layout_gravity="center"
-                            android:tint="#81C995" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Core Security Layers"
-                            android:textColor="#ECEEF4"
-                            android:textSize="13.5sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-medium" />
-
-                        <TextView
-                            android:id="@+id/tvCoreSecurityCardSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10 Easy Layers • Zero Wipe Guard &amp; Device State"
-                            android:textColor="#7A7F8E"
-                            android:textSize="11sp"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvCoreSecurityCardBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_badge_green"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="10/10 ACTIVE"
-                        android:textColor="#4CAF50"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_chevron_right" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ========== SECTION 5: ADVANCED MONITORING & DEFENSE (16 MEDIUM LAYERS) ========== -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_section_card"
-                android:layout_marginBottom="16dp">
-
-                <!-- Section Header -->
-                <LinearLayout
-                    android:id="@+id/headerMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_database"
-                        android:layout_marginEnd="10dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Advanced Monitoring"
-                            android:textColor="#ECEEF4"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-medium" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="16 Level-2 medium layers • SQLite WAL &amp; Hardware Keystore"
-                            android:textColor="#7A7F8E"
-                            android:textSize="11sp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvMediumActiveCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="16/16 active"
-                        android:textColor="#81C995"
-                        android:textSize="11sp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_chevron_right"
-                        android:rotation="90" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#1C1E26" />
-
-                <!-- Row: Medium Security Matrix (16 Medium Layers) -->
-                <LinearLayout
-                    android:id="@+id/cardMediumSecurity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <FrameLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:layout_marginEnd="12dp">
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_feature_stealth"
-                            android:layout_gravity="center"
-                            android:tint="#8AB4F8" />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Advanced Security Layers"
-                            android:textColor="#ECEEF4"
-                            android:textSize="13.5sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-medium" />
-
-                        <TextView
-                            android:id="@+id/tvMediumSecurityCardSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="16 Medium Layers • SQLite ACID, TEE Enclave &amp; Watchdogs"
-                            android:textColor="#7A7F8E"
-                            android:textSize="11sp"
-                            android:layout_marginTop="2dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tvMediumSecurityCardBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_badge_blue_dark"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="16/16 ARMED"
-                        android:textColor="#8AB4F8"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="6dp" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_chevron_right" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- ========== SECTION 6: HARDWARE & DEEP OS DEFENSE (14 HARD LAYERS) ========== -->
+            <!-- ========== SECTION 4: HARDWARE SENSORS & SYSTEM DIAGNOSTICS ========== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1443,7 +1307,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Deep OS &amp; Hardware Defense"
+                            android:text="Hardware Sensors &amp; Privacy"
                             android:textColor="#ECEEF4"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -1452,7 +1316,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="14 Level-3 &amp; Level-4 layers • Sensor Guard &amp; Cryptographic Vault"
+                            android:text="Live Camera/Mic Monitor • Digital Canary • Diagnostics"
                             android:textColor="#7A7F8E"
                             android:textSize="11sp" />
 
@@ -1462,7 +1326,7 @@
                         android:id="@+id/tvHardActiveCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="14/14 active"
+                        android:text="ARMED"
                         android:textColor="#81C995"
                         android:textSize="11sp"
                         android:layout_marginEnd="6dp" />
@@ -1481,7 +1345,7 @@
                     android:layout_height="1dp"
                     android:background="#1C1E26" />
 
-                <!-- Row: Hard Security Matrix (14 Hard Layers) -->
+                <!-- Row: Hard Security Matrix -->
                 <LinearLayout
                     android:id="@+id/cardHardSecurity"
                     android:layout_width="match_parent"
@@ -1518,7 +1382,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hardware &amp; Deep OS Defense"
+                            android:text="Sensor Privacy &amp; Diagnostics"
                             android:textColor="#ECEEF4"
                             android:textSize="13.5sp"
                             android:textStyle="bold"
@@ -1528,7 +1392,7 @@
                             android:id="@+id/tvHardSecurityCardSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="14 Hard Layers • Sensor Privacy, Canary Honeypot &amp; Archive"
+                            android:text="Camera/Mic monitors, Canary honeypot &amp; self-test"
                             android:textColor="#7A7F8E"
                             android:textSize="11sp"
                             android:layout_marginTop="2dp" />
@@ -1544,7 +1408,7 @@
                         android:paddingEnd="8dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="4dp"
-                        android:text="14/14 ARMED"
+                        android:text="ARMED"
                         android:textColor="#FDD663"
                         android:textSize="10sp"
                         android:textStyle="bold"
@@ -1560,25 +1424,240 @@
 
             </LinearLayout>
 
-            <!-- Hidden cards preserved for backward compat (not shown in main UI) -->
+            <!-- ========== SECTION 5: SECURITY ARCHITECTURE & EVIDENCE VAULT ========== -->
             <LinearLayout
-                android:id="@+id/cardCallSmsVault"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
-                <TextView android:id="@+id/tvCallSmsCardSub" android:layout_width="0dp" android:layout_height="0dp" />
-                <TextView android:id="@+id/tvCallSmsCardBadge" android:layout_width="0dp" android:layout_height="0dp" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_section_card"
+                android:layout_marginBottom="16dp">
 
-            <LinearLayout
-                android:id="@+id/cardBrowserVault"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
-                <TextView android:id="@+id/tvBrowserCardSub" android:layout_width="0dp" android:layout_height="0dp" />
-                <TextView android:id="@+id/tvBrowserCardBadge" android:layout_width="0dp" android:layout_height="0dp" />
+                <!-- Section Header -->
+                <LinearLayout
+                    android:id="@+id/headerMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_database"
+                        android:layout_marginEnd="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Database Vault &amp; System Integrity"
+                            android:textColor="#ECEEF4"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hardware Keystore TEE • SQLite WAL Database • ACID Engine"
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvMediumActiveCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SECURE"
+                        android:textColor="#81C995"
+                        android:textSize="11sp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:rotation="90" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1C1E26" />
+
+                <!-- Row: Medium Security Matrix -->
+                <LinearLayout
+                    android:id="@+id/cardMediumSecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:layout_marginEnd="12dp">
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_feature_stealth"
+                            android:layout_gravity="center"
+                            android:tint="#8AB4F8" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Database Integrity &amp; Keystore"
+                            android:textColor="#ECEEF4"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:id="@+id/tvMediumSecurityCardSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SQLite WAL ACID transactions &amp; hardware master key"
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvMediumSecurityCardBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_blue_dark"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="ARMED"
+                        android:textColor="#8AB4F8"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1C1E26"
+                    android:layout_marginStart="68dp" />
+
+                <!-- Row: System Health & Invariants -->
+                <LinearLayout
+                    android:id="@+id/cardCoreSecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:layout_marginEnd="12dp">
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_protection"
+                            android:layout_gravity="center"
+                            android:tint="#81C995" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="System Invariants &amp; Device Health"
+                            android:textColor="#ECEEF4"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:id="@+id/tvCoreSecurityCardSub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Zero-wipe invariant, root scanner &amp; fail-safe recovery"
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginTop="2dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCoreSecurityCardBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_green"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="OPTIMAL"
+                        android:textColor="#4CAF50"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="6dp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

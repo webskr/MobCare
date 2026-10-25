@@ -81,7 +81,7 @@ class MediumSecurityActivity : AppCompatActivity() {
                 "• Resource Auto-Pruning: Complete ($pruned old records pruned)\n" +
                 "• SQLite Database: VACUUM Compacted"
 
-        Toast.makeText(this, "Integrity Audit Complete • 16/16 Layers Verified", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Integrity Audit Complete • All Subsystems Verified", Toast.LENGTH_SHORT).show()
         showAuditResultDialog(auditSummary)
         renderMediumLayers()
     }
@@ -96,7 +96,6 @@ class MediumSecurityActivity : AppCompatActivity() {
         val notifCount = NotificationVaultManager.getNotifications(this).size
         val intruderCount = IntruderCaptureManager.getIntruderRecords(this).size
         val isAccEnabled = MobCareAccessibilityService.instance != null
-        val isAdminActive = StealthManager.isDeviceAdminActive(this)
         val activeSwap = IdentitySwapManager.getActiveSwap(this)
 
         tvStatDb.text = if (isDbOk) "SQLite (WAL)" else "DB Error"
@@ -104,7 +103,7 @@ class MediumSecurityActivity : AppCompatActivity() {
         tvStatPruning.text = "30-Day Guard"
 
         data class MediumLayer(
-            val layerNum: String,
+            val categoryTag: String,
             val title: String,
             val badge: String,
             val badgeColor: String,
@@ -115,9 +114,9 @@ class MediumSecurityActivity : AppCompatActivity() {
         )
 
         val layers = listOf(
-            // 1. Layer 1
+            // 1
             MediumLayer(
-                layerNum = "LAYER 1",
+                categoryTag = "APP LOCK & ISOLATION",
                 title = "Core Protection (PIN Gate & Storage Isolation)",
                 badge = "ACTIVE • OVERLAY",
                 badgeColor = "#81C995",
@@ -128,9 +127,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, AppLockerActivity::class.java))
             },
 
-            // 2. Layer 2
+            // 2
             MediumLayer(
-                layerNum = "LAYER 2",
+                categoryTag = "INTRUDER CAPTURE",
                 title = "Intrusion Detection (Silent Camera2 Selfie)",
                 badge = "$intruderCount SNAPS CAPTURED",
                 badgeColor = if (intruderCount > 0) "#F28B82" else "#81C995",
@@ -141,9 +140,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, GalleryActivity::class.java))
             },
 
-            // 3. Layer 4
+            // 3
             MediumLayer(
-                layerNum = "LAYER 4",
+                categoryTag = "PRIVILEGE AUDIT",
                 title = "Permission Firewall (Dangerous Privilege Audit)",
                 badge = "FIREWALL ARMED",
                 badgeColor = "#81C995",
@@ -154,9 +153,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, PackageGuardianActivity::class.java))
             },
 
-            // 4. Layer 8
+            // 4
             MediumLayer(
-                layerNum = "LAYER 8",
+                categoryTag = "DATA STORAGE",
                 title = "Data Vault (Sandboxed SQLite Database Engine)",
                 badge = "SQLITE WAL ACTIVE",
                 badgeColor = "#81C995",
@@ -168,9 +167,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "SQLite Vault Status: Healthy • $count records stored in private sandboxed DB.", Toast.LENGTH_LONG).show()
             },
 
-            // 5. Layer 9
+            // 5
             MediumLayer(
-                layerNum = "LAYER 9",
+                categoryTag = "FORENSIC LOGGING",
                 title = "Forensics (Millisecond Timestamped Audit Logging)",
                 badge = "$auditCount EVENTS RECORDED",
                 badgeColor = "#81C995",
@@ -181,9 +180,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, KeyboardTelemetryActivity::class.java))
             },
 
-            // 6. Layer 11
+            // 6
             MediumLayer(
-                layerNum = "LAYER 11",
+                categoryTag = "WINDOW INTELLIGENCE",
                 title = "App Activity Intelligence (Window Transitions)",
                 badge = if (isAccEnabled) "ACCESSIBILITY ARMED" else "SETUP NEEDED",
                 badgeColor = if (isAccEnabled) "#81C995" else "#FDD663",
@@ -194,9 +193,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, AppTimelineActivity::class.java))
             },
 
-            // 7. Layer 14
+            // 7
             MediumLayer(
-                layerNum = "LAYER 14",
+                categoryTag = "PACKAGE MONITORING",
                 title = "App Integrity Monitoring (Package Install Ledger)",
                 badge = "BROADCAST RECEIVER",
                 badgeColor = "#81C995",
@@ -207,9 +206,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, PackageGuardianActivity::class.java))
             },
 
-            // 8. Layer 15
+            // 8
             MediumLayer(
-                layerNum = "LAYER 15",
+                categoryTag = "NOTIFICATION VAULT",
                 title = "Notification Intelligence (Status Bar Interceptor)",
                 badge = "$notifCount ALERTS VAULTED",
                 badgeColor = "#81C995",
@@ -220,9 +219,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, NotificationVaultActivity::class.java))
             },
 
-            // 9. Layer 20
+            // 9
             MediumLayer(
-                layerNum = "LAYER 20",
+                categoryTag = "EVENT CHRONOLOGY",
                 title = "Forensic Timeline (Unified Chronology Feed)",
                 badge = "UNIFIED CORRELATION",
                 badgeColor = "#81C995",
@@ -233,9 +232,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, AppTimelineActivity::class.java))
             },
 
-            // 10. Layer 21
+            // 10
             MediumLayer(
-                layerNum = "LAYER 21",
+                categoryTag = "MEDIA SANDBOX",
                 title = "Secure Evidence Storage (Isolated Media Sandbox)",
                 badge = "NO-MEDIA SANDBOX",
                 badgeColor = "#81C995",
@@ -246,9 +245,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, GalleryActivity::class.java))
             },
 
-            // 11. Layer 22
+            // 11
             MediumLayer(
-                layerNum = "LAYER 22",
+                categoryTag = "REBOOT RESILIENCE",
                 title = "Recovery & Self-Protection (Decoy Gate & Reboot)",
                 badge = "BOOT RESILIENT",
                 badgeColor = "#81C995",
@@ -259,9 +258,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, CamouflageGateActivity::class.java))
             },
 
-            // 12. Layer 27
+            // 12
             MediumLayer(
-                layerNum = "LAYER 27",
+                categoryTag = "CAMOUFLAGE REVERT",
                 title = "Configuration Rollback (One-Tap Camouflage Reset)",
                 badge = if (activeSwap?.isActive == true) "CLOAK ACTIVE" else "DEFAULT STATE",
                 badgeColor = if (activeSwap?.isActive == true) "#8AB4F8" else "#81C995",
@@ -272,9 +271,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, IdentitySwapActivity::class.java))
             },
 
-            // 13. Layer 29
+            // 13
             MediumLayer(
-                layerNum = "LAYER 29",
+                categoryTag = "DATABASE INTEGRITY",
                 title = "Database Integrity (ACID Transactions & WAL)",
                 badge = if (isDbOk) "ACID VERIFIED" else "CHECK FAILED",
                 badgeColor = if (isDbOk) "#81C995" else "#F28B82",
@@ -286,9 +285,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "SQLite Integrity: ${if (ok) "PASS (Code: $msg)" else "FAIL"}", Toast.LENGTH_SHORT).show()
             },
 
-            // 14. Layer 30
+            // 14
             MediumLayer(
-                layerNum = "LAYER 30",
+                categoryTag = "AUTO-PRUNE & COMPACTION",
                 title = "Resource Protection (30-Day Auto-Prune & VACUUM)",
                 badge = "30-DAY PRUNED",
                 badgeColor = "#81C995",
@@ -301,9 +300,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "Compaction complete • Pruned $pruned old records • Database vacuumed.", Toast.LENGTH_LONG).show()
             },
 
-            // 15. Layer 32
+            // 15
             MediumLayer(
-                layerNum = "LAYER 32",
+                categoryTag = "HARDWARE KEYSTORE",
                 title = "Key & Secret Management (Hardware AndroidKeyStore)",
                 badge = if (isHwKeystore) "TEE ENCLAVE ACTIVE" else "KEYSTORE READY",
                 badgeColor = "#8AB4F8",
@@ -318,9 +317,9 @@ class MediumSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "Hardware Keystore: ${if (match) "AES-256 GCM Cryptographic Match OK" else "Mismatch"}", Toast.LENGTH_SHORT).show()
             },
 
-            // 16. Layer 39
+            // 16
             MediumLayer(
-                layerNum = "LAYER 39",
+                categoryTag = "DECIMAL RECOVERY GATE",
                 title = "Recovery Access Protection (Secret Math Gate)",
                 badge = "DECIMAL GATE ARMED",
                 badgeColor = "#81C995",
@@ -362,7 +361,7 @@ class MediumSecurityActivity : AppCompatActivity() {
 
             val tvNum = TextView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                text = item.layerNum
+                text = item.categoryTag
                 setTextColor(Color.parseColor("#7A7F8E"))
                 textSize = 10f
                 setTypeface(null, android.graphics.Typeface.BOLD)

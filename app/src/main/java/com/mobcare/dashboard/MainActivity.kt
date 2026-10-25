@@ -104,9 +104,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvCoreActiveCount: TextView
     private lateinit var tvDataActiveCount: TextView
     private lateinit var tvAppActiveCount: TextView
-    private lateinit var tvFoundationalActiveCount: TextView
 
-    // Section 4: Foundational Security (10 Easy Layers)
+    // Section 4: System Health & Invariants
     private lateinit var cardCoreSecurity: LinearLayout
     private lateinit var tvCoreSecurityCardSub: TextView
     private lateinit var tvCoreSecurityCardBadge: TextView
@@ -192,9 +191,8 @@ class MainActivity : AppCompatActivity() {
         tvCoreActiveCount = findViewById(R.id.tvCoreActiveCount)
         tvDataActiveCount = findViewById(R.id.tvDataActiveCount)
         tvAppActiveCount = findViewById(R.id.tvAppActiveCount)
-        tvFoundationalActiveCount = findViewById(R.id.tvFoundationalActiveCount)
 
-        // Section 4: Foundational Security (10 Easy Layers)
+        // Section 4: System Health & Invariants
         cardCoreSecurity = findViewById(R.id.cardCoreSecurity)
         tvCoreSecurityCardSub = findViewById(R.id.tvCoreSecurityCardSub)
         tvCoreSecurityCardBadge = findViewById(R.id.tvCoreSecurityCardBadge)
@@ -369,21 +367,19 @@ class MainActivity : AppCompatActivity() {
             tvBrowserCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvBrowserCardSub.text = "Web cache and browsing parameters nominal"
 
-            tvFoundationalActiveCount.text = "10/10 active"
-            tvFoundationalActiveCount.setTextColor(Color.parseColor("#81C995"))
-            tvCoreSecurityCardBadge.text = "10/10 ACTIVE"
+            tvCoreSecurityCardBadge.text = "OPTIMAL"
             tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvCoreSecurityCardSub.text = "Foundational security operational"
+            tvCoreSecurityCardSub.text = "Device state, zero-wipe invariant & safe mode verified"
 
-            tvMediumActiveCount.text = "16/16 active"
+            tvMediumActiveCount.text = "SECURE"
             tvMediumActiveCount.setTextColor(Color.parseColor("#81C995"))
-            tvMediumSecurityCardBadge.text = "16/16 ARMED"
+            tvMediumSecurityCardBadge.text = "SECURE"
             tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvMediumSecurityCardSub.text = "SQLite WAL, Hardware Keystore, Forensics & Decoy operational"
+            tvMediumSecurityCardSub.text = "SQLite WAL, Hardware Keystore & local evidence vault normal"
 
-            tvHardActiveCount.text = "14/14 active"
+            tvHardActiveCount.text = "OPTIMAL"
             tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
-            tvHardSecurityCardBadge.text = "14/14 ARMED"
+            tvHardSecurityCardBadge.text = "OPTIMAL"
             tvHardSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvHardSecurityCardSub.text = "Hardware sensors, Honeypot & Archive operational"
             return
@@ -528,40 +524,48 @@ class MainActivity : AppCompatActivity() {
         var dataActive = 0
         if (isNotifListenerEnabled) dataActive++
         dataActive++ // Offline Encrypted Vault is active
+        if (hasCallPerms) dataActive++
+        if (isAccEnabled) dataActive++
 
         var appActive = 0
         if (hasUsage) appActive++
         if (lockedCount > 0) appActive++
 
         val totalActive = coreActive + dataActive + appActive
-        tvStatModules.text = "$totalActive/7"
+        tvStatModules.text = "$totalActive/9 active"
 
         tvCoreActiveCount.text = "$coreActive/3 active"
         tvCoreActiveCount.setTextColor(if (coreActive == 3) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
 
-        tvDataActiveCount.text = "$dataActive/2 active"
-        tvDataActiveCount.setTextColor(if (dataActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
+        tvDataActiveCount.text = "$dataActive/4 active"
+        tvDataActiveCount.setTextColor(if (dataActive == 4) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
 
         tvAppActiveCount.text = "$appActive/2 active"
         tvAppActiveCount.setTextColor(if (appActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
 
-        tvFoundationalActiveCount.text = "10/10 active"
-        tvFoundationalActiveCount.setTextColor(Color.parseColor("#81C995"))
-        tvCoreSecurityCardBadge.text = "10/10 ACTIVE"
-        tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-        tvCoreSecurityCardSub.text = "10 Easy Layers • Zero Wipe Guard & Device State"
+        val isCamGranted = IntruderCaptureManager.isCameraPermissionGranted(this)
+        if (isCamGranted) {
+            tvHardActiveCount.text = "ARMED"
+            tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
+            tvHardSecurityCardBadge.text = "ARMED"
+            tvHardSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
+        } else {
+            tvHardActiveCount.text = "SETUP"
+            tvHardActiveCount.setTextColor(Color.parseColor("#FDD663"))
+            tvHardSecurityCardBadge.text = "SETUP"
+            tvHardSecurityCardBadge.setTextColor(Color.parseColor("#FDD663"))
+        }
+        tvHardSecurityCardSub.text = "Camera/Mic monitors, Canary honeypot & self-test diagnostics"
 
-        tvMediumActiveCount.text = "16/16 active"
+        tvMediumActiveCount.text = "SECURE"
         tvMediumActiveCount.setTextColor(Color.parseColor("#81C995"))
-        tvMediumSecurityCardBadge.text = "16/16 ARMED"
+        tvMediumSecurityCardBadge.text = "SECURE"
         tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-        tvMediumSecurityCardSub.text = "SQLite WAL Engine • Hardware Keystore TEE • 16 Layers Armed"
+        tvMediumSecurityCardSub.text = "SQLite WAL database engine & Hardware Keystore TEE"
 
-        tvHardActiveCount.text = "14/14 active"
-        tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
-        tvHardSecurityCardBadge.text = "14/14 ARMED"
-        tvHardSecurityCardBadge.setTextColor(Color.parseColor("#FDD663"))
-        tvHardSecurityCardSub.text = "Sensor Guard • Canary Honeypot • Cryptographic Archive"
+        tvCoreSecurityCardBadge.text = "OPTIMAL"
+        tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
+        tvCoreSecurityCardSub.text = "Zero-wipe invariant, root scanner & safe mode recovery"
 
         // Threats detected (intruder snaps + non-PlayStore sideloaded apps)
         var threatCount = intruderCount

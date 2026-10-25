@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Core Security Layers"
+                android:text="System Invariants &amp; Device Health"
                 android:textColor="#ECEEF4"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Level 1: 10/10 Easy Layers Active"
+                android:text="Zero-Wipe Invariant, Root Check &amp; Offline Safety"
                 android:textColor="#7A7F8E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -227,7 +227,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FOUNDATIONAL SECURITY LAYERS (10/10)"
+                android:text="SYSTEM HEALTH &amp; ARCHITECTURAL INVARIANTS"
                 android:textColor="#7A7F8E"
                 android:textSize="11sp"
                 android:textStyle="bold"

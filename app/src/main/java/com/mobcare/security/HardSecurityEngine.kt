@@ -882,7 +882,7 @@ object HardSecurityEngine {
 
     fun isAutoResponseEnabled(context: Context): Boolean {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getBoolean(KEY_AUTO_RESPONSE_ENABLED, true)
+            .getBoolean(KEY_AUTO_RESPONSE_ENABLED, false)
     }
 
     fun setAutoResponseEnabled(context: Context, enabled: Boolean) {

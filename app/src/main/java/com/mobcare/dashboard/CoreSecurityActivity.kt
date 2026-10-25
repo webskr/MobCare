@@ -57,7 +57,7 @@ class CoreSecurityActivity : AppCompatActivity() {
         }
 
         btnQuickScan.setOnClickListener {
-            Toast.makeText(this, "Deep scan complete • 10/10 Core Layers Verified", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Deep scan complete • System Invariants Verified", Toast.LENGTH_SHORT).show()
             renderAllLayers()
         }
 
@@ -99,9 +99,9 @@ class CoreSecurityActivity : AppCompatActivity() {
         val isRooted = listOf("/system/bin/su", "/system/xbin/su", "/sbin/su", "/system/app/Superuser.apk")
             .any { File(it).exists() }
 
-        // Data Structure for the 10 Easy-Level Layers
+        // Data Structure for System Health Items
         data class SecurityLayerInfo(
-            val layerNumber: String,
+            val categoryTag: String,
             val title: String,
             val badgeText: String,
             val badgeColor: String,
@@ -112,9 +112,9 @@ class CoreSecurityActivity : AppCompatActivity() {
         )
 
         val layers = listOf(
-            // Layer 1: Layer 36
+            // 1
             SecurityLayerInfo(
-                layerNumber = "LAYER 36",
+                categoryTag = "DEVICE STATE",
                 title = "Device State & Battery Monitoring",
                 badgeText = "$batteryStr ${if (isCharging) "CHARGING ⚡" else "ACTIVE"}",
                 badgeColor = "#81C995",
@@ -125,9 +125,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 showDiagnosticsDialog(batteryStr, isCharging)
             },
 
-            // Layer 2: Layer 37
+            // 2
             SecurityLayerInfo(
-                layerNumber = "LAYER 37",
+                categoryTag = "OFFLINE SAFETY",
                 title = "Offline Security Mode",
                 badgeText = "100% OFFLINE",
                 badgeColor = "#81C995",
@@ -138,9 +138,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "Air-gapped verification: 100% Offline • Zero cloud dependencies.", Toast.LENGTH_LONG).show()
             },
 
-            // Layer 3: Layer 40
+            // 3
             SecurityLayerInfo(
-                layerNumber = "LAYER 40",
+                categoryTag = "ZERO-WIPE INVARIANT",
                 title = "Destructive-Action Guard",
                 badgeText = "0% DATA LOSS",
                 badgeColor = "#81C995",
@@ -151,9 +151,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 showSafetyPolicyDialog()
             },
 
-            // Layer 4: Layer 7
+            // 4
             SecurityLayerInfo(
-                layerNumber = "LAYER 7",
+                categoryTag = "IDENTITY DEFENSE",
                 title = "Identity Defense & Session Lock",
                 badgeText = "MASTER PIN ACTIVE",
                 badgeColor = "#8AB4F8",
@@ -164,9 +164,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, StealthSettingsActivity::class.java))
             },
 
-            // Layer 5: Layer 10
+            // 5
             SecurityLayerInfo(
-                layerNumber = "LAYER 10",
+                categoryTag = "SYSTEM INTEGRITY",
                 title = "System Integrity & Root Scanner",
                 badgeText = if (isRooted) "ROOT DETECTED" else "SAFE SANDBOX",
                 badgeColor = if (isRooted) "#F28B82" else "#81C995",
@@ -177,9 +177,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, if (isRooted) "Warning: Root binary detected" else "System Integrity verified • Standard Sandbox", Toast.LENGTH_SHORT).show()
             },
 
-            // Layer 6: Layer 23
+            // 6
             SecurityLayerInfo(
-                layerNumber = "LAYER 23",
+                categoryTag = "SELF-PROTECTION",
                 title = "Security Engine Self-Protection",
                 badgeText = if (isAdmin) "ADMIN ARMED" else "SETUP NEEDED",
                 badgeColor = if (isAdmin) "#81C995" else "#FDD663",
@@ -190,22 +190,22 @@ class CoreSecurityActivity : AppCompatActivity() {
                 startActivity(Intent(this, StealthSettingsActivity::class.java))
             },
 
-            // Layer 7: Layer 24
+            // 7
             SecurityLayerInfo(
-                layerNumber = "LAYER 24",
+                categoryTag = "HEALTH MATRIX",
                 title = "Health Monitoring Matrix",
-                badgeText = "7/7 MONITORED",
+                badgeText = "ALL ACTIVE",
                 badgeColor = "#81C995",
-                description = "Real-time state and badge monitoring across all 7 dashboard guardian modules with instant visual indicators.",
+                description = "Real-time state and badge monitoring across all dashboard guardian modules with instant visual indicators.",
                 technicalDetail = "Auditing Keyboard, Package Guardian, Stealth Engine, Notification Vault, Local Vault, App Timeline, App Locker.",
                 actionLabel = "STATUS"
             ) {
                 showModuleStatusDialog()
             },
 
-            // Layer 8: Layer 25
+            // 8
             SecurityLayerInfo(
-                layerNumber = "LAYER 25",
+                categoryTag = "FAIL-SAFE CRASH GUARD",
                 title = "Fail-Safe Security & Crash Guard",
                 badgeText = "FAIL-SAFE ARMED",
                 badgeColor = "#81C995",
@@ -216,9 +216,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "Crash guard verified • Defensive fallback operational.", Toast.LENGTH_SHORT).show()
             },
 
-            // Layer 9: Layer 28
+            // 9
             SecurityLayerInfo(
-                layerNumber = "LAYER 28",
+                categoryTag = "DATABASE INTEGRITY",
                 title = "Safe Update & Database Integrity",
                 badgeText = "ACID GUARANTEED",
                 badgeColor = "#81C995",
@@ -229,9 +229,9 @@ class CoreSecurityActivity : AppCompatActivity() {
                 Toast.makeText(this, "Database check passed • All SQLite tables healthy.", Toast.LENGTH_SHORT).show()
             },
 
-            // Layer 10: Layer 35
+            // 10
             SecurityLayerInfo(
-                layerNumber = "LAYER 35",
+                categoryTag = "PERMISSIONS FIREWALL",
                 title = "Capability & Permission Control",
                 badgeText = "PERMISSION SHIELD",
                 badgeColor = "#8AB4F8",
@@ -274,7 +274,7 @@ class CoreSecurityActivity : AppCompatActivity() {
 
             val tvNum = TextView(this).apply {
                 layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                text = item.layerNumber
+                text = item.categoryTag
                 setTextColor(Color.parseColor("#7A7F8E"))
                 textSize = 10f
                 setTypeface(null, android.graphics.Typeface.BOLD)

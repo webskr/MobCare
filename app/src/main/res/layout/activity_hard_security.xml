@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hardware &amp; Deep OS Defense"
+                android:text="Hardware Sensors &amp; Privacy"
                 android:textColor="#ECEEF4"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="14 Level-3 &amp; Level-4 Hard Layers • 100% Offline"
+                android:text="Live Sensor Sentinel, Honeypots &amp; Diagnostics"
                 android:textColor="#7A7F8E"
                 android:textSize="11sp" />
 
@@ -59,7 +59,7 @@
             android:paddingEnd="8dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
-            android:text="14/14 ARMED"
+            android:text="ARMED"
             android:textColor="#8AB4F8"
             android:textSize="10sp"
             android:textStyle="bold" />
@@ -284,7 +284,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 13: Sensor Privacy Intelligence"
+                            android:text="Sensor Privacy &amp; Real-Time Monitoring"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -342,7 +342,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 3: Digital Honeypot &amp; Canary Traps"
+                            android:text="Digital Canary &amp; Honeypot Trap"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -412,7 +412,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 5: Local Network Defense"
+                            android:text="Local Network Defense &amp; Proxy Audit"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -470,7 +470,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 12: Data Flow Tracking"
+                            android:text="Data Flow &amp; Traffic Telemetry"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -528,7 +528,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 17: Destination &amp; DNS Guard"
+                            android:text="DNS &amp; Link Destination Guard"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -598,7 +598,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 18: Privileged Access Deep Audit"
+                            android:text="Privileged Subsystem Deep Audit"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -656,7 +656,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 19: Behavioral Anomaly Heuristics"
+                            android:text="Behavioral Threat Heuristics"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -714,7 +714,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 31: Dependency &amp; Binary Integrity"
+                            android:text="Binary &amp; Signature Integrity"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -784,7 +784,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 6: Auto Response Engine"
+                            android:text="Automated Incident Response"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -842,7 +842,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 26: Policy Conflict Detection"
+                            android:text="Policy Conflict &amp; Rule Validator"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -900,7 +900,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 16: File Movement &amp; Hashing"
+                            android:text="File Movement &amp; SHA-256 Hashing"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -970,7 +970,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 33: Automated Security Diagnostics"
+                            android:text="Automated Security Diagnostics"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -1028,7 +1028,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 34: Formal Security Verification"
+                            android:text="Formal Security Verification"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />
@@ -1086,7 +1086,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Layer 38: Verified Cryptographic Archive"
+                            android:text="Cryptographic Archive (.mbvault)"
                             android:textColor="#ECEEF4"
                             android:textSize="13sp"
                             android:textStyle="bold" />

@@ -34,7 +34,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Advanced Security Layers"
+                android:text="Database Vault &amp; Keystore Engine"
                 android:textColor="#ECEEF4"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Level 2: 16/16 Medium Layers Operational"
+                android:text="SQLite WAL Engine &amp; Hardware Keystore TEE"
                 android:textColor="#7A7F8E"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="16/16 ARMED"
+            android:text="SECURE"
             android:textColor="#81C995"
             android:textSize="10sp"
             android:textStyle="bold"
@@ -114,7 +114,7 @@
                             android:id="@+id/tvHeroSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="16 Medium Layers • SQLite WAL • Hardware TEE • Auto-Prune"
+                            android:text="Local SQLite WAL • Hardware Keystore TEE • Auto-Prune"
                             android:textColor="#81C995"
                             android:textSize="12sp" />
                     </LinearLayout>
