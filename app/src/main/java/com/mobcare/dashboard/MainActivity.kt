@@ -22,6 +22,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvHubStatusBadge: LinearLayout
     private lateinit var tvProtectedLabel: TextView
 
-    // Device Status Stats
+    // Device Status Card & Stats
+    private lateinit var cardDeviceStatus: LinearLayout
     private lateinit var tvStatModules: TextView
     private lateinit var tvStatThreats: TextView
     private lateinit var tvStatEvents: TextView
@@ -120,11 +122,16 @@ class MainActivity : AppCompatActivity() {
         tvProtectedLabel = findViewById(R.id.tvProtectedLabel)
 
         // Device status stats
+        cardDeviceStatus = findViewById(R.id.cardDeviceStatus)
         tvDeviceStatusSub = findViewById(R.id.tvDeviceStatusSub)
         tvStatModules = findViewById(R.id.tvStatModules)
         tvStatThreats = findViewById(R.id.tvStatThreats)
         tvStatEvents = findViewById(R.id.tvStatEvents)
         tvStatSync = findViewById(R.id.tvStatSync)
+
+        cardDeviceStatus.setOnClickListener {
+            showDeviceIntegrityDialog()
+        }
 
         // Feature rows
         cardKeyboardHub = findViewById(R.id.cardKeyboardHub)
@@ -234,11 +241,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateHubOverview() {
+        // Layer 36: Device State & Battery Monitoring
+        val bm = getSystemService(Context.BATTERY_SERVICE) as? BatteryManager
+        var batteryPct = bm?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
+        val ifilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        val batteryStatus = registerReceiver(null, ifilter)
+        if (batteryPct <= 0 && batteryStatus != null) {
+            val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            if (level >= 0 && scale > 0) {
+                batteryPct = (level * 100) / scale
+            }
+        }
+        val statusExtra = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+        val isCharging = statusExtra == BatteryManager.BATTERY_STATUS_CHARGING || statusExtra == BatteryManager.BATTERY_STATUS_FULL
+        val batteryDisplay = if (batteryPct >= 0) "$batteryPct%" else "100%"
+        tvStatSync.text = batteryDisplay
+
         // If Duress Sandbox Mode is active, show sanitized/decoy status
         if (StealthManager.isDuressSandboxActive) {
             tvProtectedLabel.text = "OPTIMAL"
             tvProtectedLabel.setTextColor(Color.parseColor("#81C995"))
-            tvDeviceStatusSub.text = "System nominal"
+            tvDeviceStatusSub.text = "Battery: $batteryDisplay • System nominal"
+            tvStatModules.text = "7/7"
+            tvStatThreats.text = "0"
+            tvStatEvents.text = "0"
 
             tvKeyboardCardBadge.text = "ACTIVE"
             tvKeyboardCardBadge.setTextColor(Color.parseColor("#81C995"))
@@ -256,9 +283,9 @@ class MainActivity : AppCompatActivity() {
             tvNotificationCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvNotificationCardSub.text = "Notification listener operating normally"
 
-            tvCloudSyncCardBadge.text = "SYNCED"
+            tvCloudSyncCardBadge.text = "OFFLINE"
             tvCloudSyncCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvCloudSyncCardSub.text = "Cloud telemetry mirror synchronized"
+            tvCloudSyncCardSub.text = "100% Offline • Encrypted vault operational"
 
             tvTimelineCardBadge.text = "OPTIMAL"
             tvTimelineCardBadge.setTextColor(Color.parseColor("#81C995"))
@@ -351,11 +378,11 @@ class MainActivity : AppCompatActivity() {
             tvNotificationCardSub.text = "Listener permission required • Tap to configure"
         }
 
-        // 5. Cloud Sync status
+        // 5. Offline Encrypted Vault status (100% Local-First / Zero Cloud)
         val totalPayload = logCount + notifCount + clipCount
-        tvCloudSyncCardBadge.text = "READY"
+        tvCloudSyncCardBadge.text = "OFFLINE"
         tvCloudSyncCardBadge.setTextColor(Color.parseColor("#81C995"))
-        tvCloudSyncCardSub.text = "AES-256 GCM • $totalPayload telemetry records ready to export"
+        tvCloudSyncCardSub.text = "100% Offline • AES-256 GCM • $totalPayload records secured locally"
 
         // 6. App Timeline status
         val hasUsage = AppTimelineManager.hasUsageStatsPermission(this)
@@ -407,6 +434,70 @@ class MainActivity : AppCompatActivity() {
             tvBrowserCardBadge.setTextColor(Color.parseColor("#FDD663"))
             tvBrowserCardSub.text = "Sentinel Accessibility required • Tap to configure"
         }
+
+        // Section & Overview Counters
+        var coreActive = 0
+        if (isDefault || isEnabled) coreActive++
+        coreActive++ // Package Guardian is active
+        if (isAdmin || isFakeCrash || isCamouflage) coreActive++
+
+        var dataActive = 0
+        if (isNotifListenerEnabled) dataActive++
+        dataActive++ // Offline Encrypted Vault is active
+
+        var appActive = 0
+        if (hasUsage) appActive++
+        if (lockedCount > 0) appActive++
+
+        val totalActive = coreActive + dataActive + appActive
+        tvStatModules.text = "$totalActive/7"
+
+        tvCoreActiveCount.text = "$coreActive/3 active"
+        tvCoreActiveCount.setTextColor(if (coreActive == 3) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
+
+        tvDataActiveCount.text = "$dataActive/2 active"
+        tvDataActiveCount.setTextColor(if (dataActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
+
+        tvAppActiveCount.text = "$appActive/2 active"
+        tvAppActiveCount.setTextColor(if (appActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
+
+        // Threats detected (intruder snaps + non-PlayStore sideloaded apps)
+        var threatCount = intruderCount
+        try {
+            val pm = packageManager
+            val installed = pm.getInstalledPackages(0)
+            for (pkg in installed) {
+                val appInfo = pkg.applicationInfo ?: continue
+                if ((appInfo.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) == 0 && pkg.packageName != packageName) {
+                    val isSideload = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val info = pm.getInstallSourceInfo(pkg.packageName)
+                        val initiator = info.initiatingPackageName ?: info.installingPackageName
+                        initiator != "com.android.vending"
+                    } else {
+                        @Suppress("DEPRECATION")
+                        val installer = pm.getInstallerPackageName(pkg.packageName)
+                        installer != "com.android.vending"
+                    }
+                    if (isSideload) threatCount++
+                }
+            }
+        } catch (e: Exception) {
+            // graceful fallback
+        }
+        tvStatThreats.text = "$threatCount"
+        if (threatCount > 0) {
+            tvStatThreats.setTextColor(Color.parseColor("#F28B82"))
+        } else {
+            tvStatThreats.setTextColor(Color.parseColor("#ECEEF4"))
+        }
+
+        // Total recorded events
+        val totalEvents = logCount + pkgEvents + notifCount + clipCount + callCount + smsCount + webCount
+        tvStatEvents.text = "$totalEvents"
+
+        // Device Status Subtitle
+        val chargingTag = if (isCharging) " (Charging)" else ""
+        tvDeviceStatusSub.text = "Battery: $batteryDisplay$chargingTag • 100% Offline Guardian"
     }
 
     private fun checkDecoyGates() {
@@ -778,5 +869,149 @@ class MainActivity : AppCompatActivity() {
 
         pinDialog.setContentView(root)
         pinDialog.show()
+    }
+
+    private fun showDeviceIntegrityDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val density = resources.displayMetrics.density
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((22 * density).toInt(), (20 * density).toInt(), (22 * density).toInt(), (20 * density).toInt())
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 24f * density
+                setColor(Color.parseColor("#1C1E26"))
+                setStroke((1 * density).toInt(), Color.parseColor("#2E3240"))
+            }
+        }
+
+        // Header Title
+        val titleRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = (16 * density).toInt() }
+        }
+
+        val titleTv = TextView(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            text = "Device & Security Integrity"
+            setTextColor(Color.parseColor("#ECEEF4"))
+            textSize = 17f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
+        val badgeTv = TextView(this).apply {
+            text = "100% OFFLINE"
+            setTextColor(Color.parseColor("#81C995"))
+            textSize = 10f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setPadding((8 * density).toInt(), (4 * density).toInt(), (8 * density).toInt(), (4 * density).toInt())
+            background = GradientDrawable().apply {
+                cornerRadius = 8f * density
+                setColor(Color.parseColor("#1A2D22"))
+            }
+        }
+
+        titleRow.addView(titleTv)
+        titleRow.addView(badgeTv)
+        root.addView(titleRow)
+
+        // Read real battery info
+        val bm = getSystemService(Context.BATTERY_SERVICE) as? BatteryManager
+        var batteryPct = bm?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
+        val ifilter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        val batteryStatus = registerReceiver(null, ifilter)
+        if (batteryPct <= 0 && batteryStatus != null) {
+            val level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            if (level >= 0 && scale > 0) batteryPct = (level * 100) / scale
+        }
+        val statusExtra = batteryStatus?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+        val isCharging = statusExtra == BatteryManager.BATTERY_STATUS_CHARGING || statusExtra == BatteryManager.BATTERY_STATUS_FULL
+
+        val adbEnabled = try {
+            Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
+        } catch (e: Exception) { false }
+
+        val isRooted = listOf("/system/bin/su", "/system/xbin/su", "/sbin/su", "/system/app/Superuser.apk")
+            .any { java.io.File(it).exists() }
+
+        val items = listOf(
+            Triple("Battery Level", "${if (batteryPct >= 0) "$batteryPct%" else "Normal"}${if (isCharging) " • Charging ⚡" else " • Discharging"}", "#81C995"),
+            Triple("Architecture", "100% Local-First (Zero Cloud / No Remote Calls)", "#8AB4F8"),
+            Triple("Data Safety Policy", "Non-Destructive Guardian (Zero Data Wiping / No User Deletions)", "#81C995"),
+            Triple("Device Model", "${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL}", "#ECEEF4"),
+            Triple("Android OS", "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})", "#ECEEF4"),
+            Triple("Security Patch", Build.VERSION.SECURITY_PATCH ?: "Not Reported", "#ECEEF4"),
+            Triple("Privilege State", if (isRooted) "Root Binary Present" else "Standard Unrooted Sandbox", if (isRooted) "#F28B82" else "#81C995"),
+            Triple("USB Debugging", if (adbEnabled) "Active (ADB Interface Enabled)" else "Disabled", if (adbEnabled) "#FDD663" else "#81C995")
+        )
+
+        for ((label, value, valueColor) in items) {
+            val itemLayout = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding((12 * density).toInt(), (8 * density).toInt(), (12 * density).toInt(), (8 * density).toInt())
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { bottomMargin = (8 * density).toInt() }
+                background = GradientDrawable().apply {
+                    cornerRadius = 12f * density
+                    setColor(Color.parseColor("#15161C"))
+                }
+            }
+
+            val labelTv = TextView(this).apply {
+                text = label
+                setTextColor(Color.parseColor("#7A7F8E"))
+                textSize = 11f
+            }
+
+            val valueTv = TextView(this).apply {
+                text = value
+                setTextColor(Color.parseColor(valueColor))
+                textSize = 13f
+                setTypeface(null, android.graphics.Typeface.BOLD)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { topMargin = (2 * density).toInt() }
+            }
+
+            itemLayout.addView(labelTv)
+            itemLayout.addView(valueTv)
+            root.addView(itemLayout)
+        }
+
+        // Close Button
+        val btnClose = Button(this).apply {
+            text = "DISMISS"
+            setTextColor(Color.parseColor("#ECEEF4"))
+            textSize = 13f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            background = GradientDrawable().apply {
+                cornerRadius = 14f * density
+                setColor(Color.parseColor("#252834"))
+            }
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (44 * density).toInt()
+            ).apply { topMargin = (10 * density).toInt() }
+            setOnClickListener { dialog.dismiss() }
+        }
+        root.addView(btnClose)
+
+        val scroll = ScrollView(this).apply {
+            addView(root)
+        }
+
+        dialog.setContentView(scroll)
+        dialog.show()
     }
 }
