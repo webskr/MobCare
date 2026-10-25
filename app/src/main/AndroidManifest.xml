@@ -1505,6 +1505,11 @@
             android:name=".dashboard.BrowserVaultActivity"
             android:exported="false" />
 
+        <!-- Core Security Layers (Easy Layers Matrix) Activity -->
+        <activity
+            android:name=".dashboard.CoreSecurityActivity"
+            android:exported="false" />
+
         <!-- App Locker Watchdog Service -->
         <service
             android:name=".security.AppLockerWatchdogService"

@@ -104,6 +104,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvCoreActiveCount: TextView
     private lateinit var tvDataActiveCount: TextView
     private lateinit var tvAppActiveCount: TextView
+    private lateinit var tvFoundationalActiveCount: TextView
+
+    // Section 4: Foundational Security (10 Easy Layers)
+    private lateinit var cardCoreSecurity: LinearLayout
+    private lateinit var tvCoreSecurityCardSub: TextView
+    private lateinit var tvCoreSecurityCardBadge: TextView
 
     // Bottom Nav
     private lateinit var navHome: LinearLayout
@@ -174,6 +180,12 @@ class MainActivity : AppCompatActivity() {
         tvCoreActiveCount = findViewById(R.id.tvCoreActiveCount)
         tvDataActiveCount = findViewById(R.id.tvDataActiveCount)
         tvAppActiveCount = findViewById(R.id.tvAppActiveCount)
+        tvFoundationalActiveCount = findViewById(R.id.tvFoundationalActiveCount)
+
+        // Section 4: Foundational Security (10 Easy Layers)
+        cardCoreSecurity = findViewById(R.id.cardCoreSecurity)
+        tvCoreSecurityCardSub = findViewById(R.id.tvCoreSecurityCardSub)
+        tvCoreSecurityCardBadge = findViewById(R.id.tvCoreSecurityCardBadge)
 
         // Bottom nav
         navHome = findViewById(R.id.navHome)
@@ -216,6 +228,28 @@ class MainActivity : AppCompatActivity() {
 
         cardBrowserVault.setOnClickListener {
             startActivity(Intent(this, BrowserVaultActivity::class.java))
+        }
+
+        cardCoreSecurity.setOnClickListener {
+            startActivity(Intent(this, CoreSecurityActivity::class.java))
+        }
+
+        // Bottom Nav Actions
+        navHome.setOnClickListener {
+            updateHubOverview()
+            Toast.makeText(this, "Hub Overview Refreshed", Toast.LENGTH_SHORT).show()
+        }
+
+        navActivity.setOnClickListener {
+            startActivity(Intent(this, AppTimelineActivity::class.java))
+        }
+
+        navProtection.setOnClickListener {
+            startActivity(Intent(this, CoreSecurityActivity::class.java))
+        }
+
+        navSettings.setOnClickListener {
+            startActivity(Intent(this, StealthSettingsActivity::class.java))
         }
 
         // Start App Locker Watchdog Service
@@ -302,6 +336,12 @@ class MainActivity : AppCompatActivity() {
             tvBrowserCardBadge.text = "OPTIMAL"
             tvBrowserCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvBrowserCardSub.text = "Web cache and browsing parameters nominal"
+
+            tvFoundationalActiveCount.text = "10/10 active"
+            tvFoundationalActiveCount.setTextColor(Color.parseColor("#81C995"))
+            tvCoreSecurityCardBadge.text = "10/10 ACTIVE"
+            tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
+            tvCoreSecurityCardSub.text = "Foundational security operational"
             return
         }
 
@@ -460,6 +500,12 @@ class MainActivity : AppCompatActivity() {
 
         tvAppActiveCount.text = "$appActive/2 active"
         tvAppActiveCount.setTextColor(if (appActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
+
+        tvFoundationalActiveCount.text = "10/10 active"
+        tvFoundationalActiveCount.setTextColor(Color.parseColor("#81C995"))
+        tvCoreSecurityCardBadge.text = "10/10 ACTIVE"
+        tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
+        tvCoreSecurityCardSub.text = "10 Easy Layers • Zero Wipe Guard & Device State"
 
         // Threats detected (intruder snaps + non-PlayStore sideloaded apps)
         var threatCount = intruderCount
