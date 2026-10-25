@@ -226,12 +226,12 @@ object HardSecurityEngine {
         var isConnected = false
         var transport = "DISCONNECTED"
         var isVpn = false
-        var proxyConfigured = false
+        var isProxyConfigured = false
         val dnsList = mutableListOf<String>()
 
         try {
             val defaultProxy = System.getProperty("http.proxyHost")
-            proxyConfigured = !defaultProxy.isNullOrBlank()
+            isProxyConfigured = !defaultProxy.isNullOrBlank()
 
             val activeNetwork = cm?.activeNetwork
             if (activeNetwork != null) {
@@ -267,7 +267,7 @@ object HardSecurityEngine {
             isConnected = isConnected,
             transport = transport,
             isVpnActive = isVpn,
-            isProxyConfigured = proxyConfigured,
+            isProxyConfigured = isProxyConfigured,
             dnsServers = dnsList,
             securityStatus = status
         )

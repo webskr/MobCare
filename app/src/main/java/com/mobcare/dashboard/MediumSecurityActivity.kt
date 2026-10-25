@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mobcare.R
-import com.mobcare.audit.AppTimelineActivity
 import com.mobcare.audit.AuditLogManager
 import com.mobcare.audit.MobCareSecurityDatabase
 import com.mobcare.audit.NotificationVaultManager

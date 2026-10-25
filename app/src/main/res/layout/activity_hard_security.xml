@@ -15,12 +15,13 @@
         android:paddingEnd="16dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_back"
+            android:src="@drawable/ic_chevron_left"
             android:tint="#ECEEF4"
             android:contentDescription="Back" />
 

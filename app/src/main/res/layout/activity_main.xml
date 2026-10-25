@@ -1403,6 +1403,10 @@
                         android:layout_height="16dp"
                         android:src="@drawable/ic_chevron_right" />
 
+                </LinearLayout>
+
+            </LinearLayout>
+
             <!-- ========== SECTION 6: HARDWARE & DEEP OS DEFENSE (14 HARD LAYERS) ========== -->
             <LinearLayout
                 android:layout_width="match_parent"

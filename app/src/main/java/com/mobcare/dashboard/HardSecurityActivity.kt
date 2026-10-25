@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +25,7 @@ import java.io.File
  */
 class HardSecurityActivity : AppCompatActivity() {
 
-    private lateinit var btnBack: ImageButton
+    private lateinit var btnBack: ImageView
     private lateinit var tvHardHubBadge: TextView
     private lateinit var tvPostureSummary: TextView
     private lateinit var tvCameraSensorStatus: TextView
