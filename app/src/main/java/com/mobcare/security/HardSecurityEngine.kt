@@ -12,6 +12,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.TrafficStats
 import android.os.Build
+import android.os.FileObserver
 import android.provider.Settings
 import android.util.Base64
 import androidx.core.app.NotificationManagerCompat
@@ -50,9 +51,12 @@ object HardSecurityEngine {
 
     private const val PREFS_NAME = "mobcare_hard_security_prefs"
     private const val KEY_HONEYPOT_HASH = "honeypot_canary_hash"
+    private const val KEY_HONEYPOT_EXTERNAL_HASH = "honeypot_external_canary_hash"
     private const val KEY_HONEYPOT_DEPLOYED = "honeypot_deployed"
+    private const val KEY_HONEYPOT_TRIPPED = "honeypot_tripped"
     private const val KEY_AUTO_RESPONSE_ENABLED = "auto_response_enabled"
     private const val CANARY_FILE_NAME = "canary_credentials.vault"
+    private const val EXTERNAL_CANARY_FILE_NAME = "decoy_wallet_backup.dat"
 
     // Sensor state listeners
     private var isCameraCallbackRegistered = false
@@ -61,6 +65,11 @@ object HardSecurityEngine {
         private set
     var isMicrophoneInUseByAnyApp = false
         private set
+
+    // Active FileObservers for Honeypot Canary Tokens (Layer 3 & 16)
+    private var internalCanaryObserver: FileObserver? = null
+    private var externalCanaryObserver: FileObserver? = null
+    private var isCanaryObserverActive = false
 
     // Sensor Callbacks
     private val cameraCallback = object : CameraManager.AvailabilityCallback() {
@@ -143,20 +152,95 @@ object HardSecurityEngine {
     }
 
     // =========================================================================
-    // LAYER 3: DIGITAL HONEYPOT & CANARY TRAP
+    // LAYER 3: DIGITAL HONEYPOT & LIVE CANARY FILEOBSERVER
     // =========================================================================
 
+    private fun createCanaryObserver(dir: File, targetName: String, context: Context): FileObserver {
+        val mask = FileObserver.MODIFY or FileObserver.DELETE or FileObserver.ATTRIB or FileObserver.MOVED_FROM
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            object : FileObserver(dir, mask) {
+                override fun onEvent(event: Int, path: String?) {
+                    if (path != null && (path == targetName || path.contains("canary") || path.contains("decoy"))) {
+                        handleCanaryTampering(context, "$path (${dir.name})", event)
+                    }
+                }
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            object : FileObserver(dir.absolutePath, mask) {
+                override fun onEvent(event: Int, path: String?) {
+                    if (path != null && (path == targetName || path.contains("canary") || path.contains("decoy"))) {
+                        handleCanaryTampering(context, "$path (${dir.name})", event)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleCanaryTampering(context: Context, target: String, eventMask: Int) {
+        val sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        sp.edit().putBoolean(KEY_HONEYPOT_TRIPPED, true).apply()
+
+        val eventName = when {
+            eventMask and FileObserver.DELETE != 0 -> "DELETED"
+            eventMask and FileObserver.MODIFY != 0 -> "MODIFIED"
+            eventMask and FileObserver.ATTRIB != 0 -> "ATTRIBUTES_ALTERED"
+            eventMask and FileObserver.MOVED_FROM != 0 -> "MOVED/RENAMED"
+            else -> "TAMPERED"
+        }
+
+        val sdf = SimpleDateFormat("dd MMM, hh:mm:ss a", Locale.getDefault())
+        val timeStr = sdf.format(Date())
+        MobCareSecurityDatabase.getInstance(context).insertAuditEvent(
+            pkg = context.packageName,
+            appName = "Canary Trap",
+            content = "[HONEYPOT_TRIPPED] ALERT: Canary $eventName! Target: $target",
+            timeFormatted = timeStr
+        )
+    }
+
+    fun startCanaryFileObserver(context: Context) {
+        if (isCanaryObserverActive) return
+        val appContext = context.applicationContext
+        try {
+            val internalDir = appContext.filesDir
+            internalCanaryObserver = createCanaryObserver(internalDir, CANARY_FILE_NAME, appContext)
+            internalCanaryObserver?.startWatching()
+
+            val externalDir = appContext.getExternalFilesDir(null)
+            if (externalDir != null && externalDir.exists()) {
+                externalCanaryObserver = createCanaryObserver(externalDir, EXTERNAL_CANARY_FILE_NAME, appContext)
+                externalCanaryObserver?.startWatching()
+            }
+            isCanaryObserverActive = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun stopCanaryFileObserver() {
+        try {
+            internalCanaryObserver?.stopWatching()
+            externalCanaryObserver?.stopWatching()
+            internalCanaryObserver = null
+            externalCanaryObserver = null
+            isCanaryObserverActive = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     /**
-     * Deploys a fake credential canary token inside the app's files directory.
-     * If modified, deleted, or altered by an unauthorized scanner or rogue process,
-     * it flags an intrusion event.
+     * Deploys both an internal sandboxed canary token and an external decoy honeypot file.
+     * Continuously hooks an active FileObserver to detect unauthorized reads/writes/deletions.
      */
     fun deployOrVerifyCanaryHoneypot(context: Context): HoneypotStatus {
         val sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val canaryFile = File(context.filesDir, CANARY_FILE_NAME)
+        startCanaryFileObserver(context)
 
-        if (!canaryFile.exists()) {
-            // Deploy canary
+        // 1. Internal Sandboxed Canary
+        val internalFile = File(context.filesDir, CANARY_FILE_NAME)
+        if (!internalFile.exists()) {
             try {
                 val canaryContent = """
                     {
@@ -166,43 +250,80 @@ object HardSecurityEngine {
                       "integrity_marker": "MOBCARE_CANARY_DO_NOT_ALTER"
                     }
                 """.trimIndent()
-                canaryFile.writeText(canaryContent)
-                val hash = computeSha256(canaryFile)
-                sp.edit()
-                    .putString(KEY_HONEYPOT_HASH, hash)
-                    .putBoolean(KEY_HONEYPOT_DEPLOYED, true)
-                    .apply()
-
-                val sdf = SimpleDateFormat("dd MMM, hh:mm:ss a", Locale.getDefault())
-                val timeStr = sdf.format(Date())
-                MobCareSecurityDatabase.getInstance(context).insertAuditEvent(
-                    pkg = context.packageName,
-                    appName = "Canary Trap",
-                    content = "[CANARY_DEPLOYED] Token deployed at ${canaryFile.name} (SHA-256: ${hash.take(8)}...)",
-                    timeFormatted = timeStr
-                )
-                return HoneypotStatus.ARMED
+                internalFile.writeText(canaryContent)
+                val hash = computeSha256(internalFile)
+                sp.edit().putString(KEY_HONEYPOT_HASH, hash).apply()
             } catch (e: Exception) {
                 return HoneypotStatus.ERROR
             }
-        } else {
-            // Verify integrity
-            val expectedHash = sp.getString(KEY_HONEYPOT_HASH, "") ?: ""
-            val currentHash = computeSha256(canaryFile)
-            return if (expectedHash.isNotEmpty() && expectedHash == currentHash) {
-                HoneypotStatus.ARMED
-            } else {
-                // Honeypot tripped / altered!
-                val sdf = SimpleDateFormat("dd MMM, hh:mm:ss a", Locale.getDefault())
-                val timeStr = sdf.format(Date())
-                MobCareSecurityDatabase.getInstance(context).insertAuditEvent(
-                    pkg = context.packageName,
-                    appName = "Canary Trap",
-                    content = "[HONEYPOT_TRIPPED] ALERT: Canary altered! Expected: ${expectedHash.take(8)} Found: ${currentHash.take(8)}",
-                    timeFormatted = timeStr
-                )
-                HoneypotStatus.TRIPPED
+        }
+
+        // 2. External Storage Decoy Honey-Token
+        val extDir = context.getExternalFilesDir(null)
+        val externalFile = if (extDir != null) File(extDir, EXTERNAL_CANARY_FILE_NAME) else null
+        if (externalFile != null && !externalFile.exists()) {
+            try {
+                val extContent = """
+                    {
+                      "vault_type": "decoy_crypto_wallet_seed",
+                      "wallet_pubkey": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+                      "entropy_marker": "CANARY_EXTERNAL_HONEYPOT_582914",
+                      "deployed_epoch": ${System.currentTimeMillis()}
+                    }
+                """.trimIndent()
+                externalFile.writeText(extContent)
+                val extHash = computeSha256(externalFile)
+                sp.edit().putString(KEY_HONEYPOT_EXTERNAL_HASH, extHash).apply()
+            } catch (e: Exception) {
+                // external storage may be unavailable in some profiles
             }
+        }
+
+        // Check if previously flagged tripped
+        if (sp.getBoolean(KEY_HONEYPOT_TRIPPED, false)) {
+            return HoneypotStatus.TRIPPED
+        }
+
+        // Verify cryptographic hashes
+        val expectedInternalHash = sp.getString(KEY_HONEYPOT_HASH, "") ?: ""
+        val currentInternalHash = computeSha256(internalFile)
+        if (expectedInternalHash.isNotEmpty() && expectedInternalHash != currentInternalHash) {
+            handleCanaryTampering(context, internalFile.name, FileObserver.MODIFY)
+            return HoneypotStatus.TRIPPED
+        }
+
+        if (externalFile != null && externalFile.exists()) {
+            val expectedExtHash = sp.getString(KEY_HONEYPOT_EXTERNAL_HASH, "") ?: ""
+            val currentExtHash = computeSha256(externalFile)
+            if (expectedExtHash.isNotEmpty() && expectedExtHash != currentExtHash) {
+                handleCanaryTampering(context, externalFile.name, FileObserver.MODIFY)
+                return HoneypotStatus.TRIPPED
+            }
+        }
+
+        return HoneypotStatus.ARMED
+    }
+
+    fun resetCanaryHoneypot(context: Context): Boolean {
+        return try {
+            val sp = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val internalFile = File(context.filesDir, CANARY_FILE_NAME)
+            if (internalFile.exists()) internalFile.delete()
+
+            val extDir = context.getExternalFilesDir(null)
+            val extFile = if (extDir != null) File(extDir, EXTERNAL_CANARY_FILE_NAME) else null
+            if (extFile != null && extFile.exists()) extFile.delete()
+
+            sp.edit()
+                .remove(KEY_HONEYPOT_HASH)
+                .remove(KEY_HONEYPOT_EXTERNAL_HASH)
+                .putBoolean(KEY_HONEYPOT_TRIPPED, false)
+                .apply()
+
+            deployOrVerifyCanaryHoneypot(context)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 
@@ -321,6 +442,34 @@ object HardSecurityEngine {
         }
 
         return list.sortedByDescending { it.totalMb }.take(limit)
+    }
+
+    fun persistCurrentTrafficSnapshot(context: Context): Int {
+        val trafficList = getAppTrafficAudit(context, limit = 20)
+        val sdf = SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault())
+        val timeStr = sdf.format(Date())
+        val db = MobCareSecurityDatabase.getInstance(context)
+        var count = 0
+        for (item in trafficList) {
+            db.insertTrafficSnapshot(
+                pkg = item.packageName,
+                appName = item.appName,
+                rxMb = item.rxMb,
+                txMb = item.txMb,
+                totalMb = item.totalMb,
+                timeFormatted = timeStr
+            )
+            count++
+        }
+        return count
+    }
+
+    fun getPersistedTrafficSummary(context: Context): Pair<Int, Double> {
+        return MobCareSecurityDatabase.getInstance(context).getPersistedTrafficSummary()
+    }
+
+    fun getPersistedTrafficRecords(context: Context, limit: Int = 20): List<com.mobcare.audit.TrafficHistoryRecord> {
+        return MobCareSecurityDatabase.getInstance(context).getAllTrafficRecords(limit)
     }
 
     // =========================================================================
@@ -855,6 +1004,108 @@ object HardSecurityEngine {
                 sha256Checksum = "",
                 message = "Backup error: ${e.message}"
             )
+        }
+    }
+
+    data class RestoreResult(
+        val success: Boolean,
+        val restoredAuditCount: Int,
+        val restoredNotifCount: Int,
+        val restoredPackageCount: Int,
+        val totalRecords: Int,
+        val message: String
+    )
+
+    fun listAvailableBackups(context: Context): List<File> {
+        val backupDir = File(context.filesDir, "backups")
+        if (!backupDir.exists()) return emptyList()
+        return backupDir.listFiles { _, name -> name.endsWith(".mbvault") }
+            ?.sortedByDescending { it.lastModified() }
+            ?: emptyList()
+    }
+
+    fun restoreCryptographicBackup(context: Context, backupFile: File): RestoreResult {
+        return try {
+            if (!backupFile.exists() || backupFile.length() == 0L) {
+                return RestoreResult(false, 0, 0, 0, 0, "Selected .mbvault archive is empty or does not exist.")
+            }
+            val encryptedPayload = backupFile.readText()
+            val decryptedJsonString = MobCareKeyStoreManager.decryptString(encryptedPayload)
+            if (decryptedJsonString.isBlank()) {
+                return RestoreResult(false, 0, 0, 0, 0, "Decryption failed. Archive may be corrupted or key mismatch.")
+            }
+
+            val rootJson = JSONObject(decryptedJsonString)
+            val db = MobCareSecurityDatabase.getInstance(context)
+
+            var auditRestored = 0
+            var notifsRestored = 0
+            var packagesRestored = 0
+
+            val auditArray = rootJson.optJSONArray("audit_events")
+            if (auditArray != null) {
+                for (i in 0 until auditArray.length()) {
+                    val item = auditArray.getJSONObject(i)
+                    db.insertAuditEvent(
+                        pkg = item.optString("package_name", "unknown"),
+                        appName = item.optString("app_name", "App"),
+                        content = item.optString("content", ""),
+                        timeFormatted = item.optString("timestamp", "Restored")
+                    )
+                    auditRestored++
+                }
+            }
+
+            val notifArray = rootJson.optJSONArray("notifications")
+            if (notifArray != null) {
+                for (i in 0 until notifArray.length()) {
+                    val item = notifArray.getJSONObject(i)
+                    db.insertNotification(
+                        pkg = item.optString("package_name", "unknown"),
+                        appName = item.optString("app_name", "App"),
+                        title = item.optString("title", ""),
+                        text = item.optString("text", ""),
+                        category = "RESTORED",
+                        timeFormatted = item.optString("timestamp", "Restored")
+                    )
+                    notifsRestored++
+                }
+            }
+
+            val pkgArray = rootJson.optJSONArray("packages")
+            if (pkgArray != null) {
+                for (i in 0 until pkgArray.length()) {
+                    val item = pkgArray.getJSONObject(i)
+                    db.insertPackageEvent(
+                        pkg = item.optString("package_name", "unknown"),
+                        appName = item.optString("app_name", "App"),
+                        action = item.optString("action", "RESTORED"),
+                        isSideload = item.optBoolean("is_sideload", false),
+                        timeFormatted = item.optString("timestamp", "Restored")
+                    )
+                    packagesRestored++
+                }
+            }
+
+            val total = auditRestored + notifsRestored + packagesRestored
+            val sdf = SimpleDateFormat("dd MMM, hh:mm:ss a", Locale.getDefault())
+            db.insertAuditEvent(
+                pkg = context.packageName,
+                appName = "Vault Restore",
+                content = "[VAULT_RESTORED] Safely merged $total records from ${backupFile.name}",
+                timeFormatted = sdf.format(Date())
+            )
+
+            RestoreResult(
+                success = true,
+                restoredAuditCount = auditRestored,
+                restoredNotifCount = notifsRestored,
+                restoredPackageCount = packagesRestored,
+                totalRecords = total,
+                message = "Successfully merged $total records into local encrypted database."
+            )
+        } catch (e: Exception) {
+            RestoreResult(false, 0, 0, 0, 0, "Restore failed: ${e.message}")
         }
     }
 

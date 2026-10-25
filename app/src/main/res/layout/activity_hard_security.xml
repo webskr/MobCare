@@ -222,6 +222,26 @@
                         android:layout_marginEnd="6dp" />
 
                     <Button
+                        android:id="@+id/btnGenerateAuditReport"
+                        android:layout_width="0dp"
+                        android:layout_height="38dp"
+                        android:layout_weight="1"
+                        android:text="AUDIT REPORT"
+                        android:textSize="10.5sp"
+                        android:textStyle="bold"
+                        android:textColor="#81C995"
+                        android:backgroundTint="#15241C"
+                        android:layout_marginStart="6dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <Button
                         android:id="@+id/btnExportVaultBackup"
                         android:layout_width="0dp"
                         android:layout_height="38dp"
@@ -231,20 +251,21 @@
                         android:textStyle="bold"
                         android:textColor="#ECEEF4"
                         android:backgroundTint="#1F2330"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnRestoreVaultBackup"
+                        android:layout_width="0dp"
+                        android:layout_height="38dp"
+                        android:layout_weight="1"
+                        android:text="RESTORE (.MBVAULT)"
+                        android:textSize="10.5sp"
+                        android:textStyle="bold"
+                        android:textColor="#81C995"
+                        android:backgroundTint="#1A2D23"
                         android:layout_marginStart="6dp" />
 
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnGenerateAuditReport"
-                    android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:text="VIEW FORMAL SECURITY REPORT"
-                    android:textSize="10.5sp"
-                    android:textStyle="bold"
-                    android:textColor="#81C995"
-                    android:backgroundTint="#15241C"
-                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
 
@@ -320,11 +341,15 @@
 
             <!-- Layer 3: Digital Honeypot & Canary Traps -->
             <LinearLayout
+                android:id="@+id/cardHoneypot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_section_card"
                 android:orientation="vertical"
                 android:padding="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -448,11 +473,15 @@
 
             <!-- Layer 12: Data Flow Tracking -->
             <LinearLayout
+                android:id="@+id/cardDataFlow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_section_card"
                 android:orientation="vertical"
                 android:padding="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_marginBottom="10dp">
 
                 <LinearLayout

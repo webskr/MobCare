@@ -105,18 +105,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvDataActiveCount: TextView
     private lateinit var tvAppActiveCount: TextView
 
-    // Section 4: System Health & Invariants
-    private lateinit var cardCoreSecurity: LinearLayout
-    private lateinit var tvCoreSecurityCardSub: TextView
-    private lateinit var tvCoreSecurityCardBadge: TextView
-
-    // Section 5: Advanced Monitoring (16 Medium Layers)
-    private lateinit var tvMediumActiveCount: TextView
-    private lateinit var cardMediumSecurity: LinearLayout
-    private lateinit var tvMediumSecurityCardSub: TextView
-    private lateinit var tvMediumSecurityCardBadge: TextView
-
-    // Section 6: Hardware & Deep OS Defense (14 Hard Layers)
+    // Section 4: Hardware & Deep OS Defense (14 Hard Layers)
     private lateinit var tvHardActiveCount: TextView
     private lateinit var cardHardSecurity: LinearLayout
     private lateinit var tvHardSecurityCardSub: TextView
@@ -192,18 +181,7 @@ class MainActivity : AppCompatActivity() {
         tvDataActiveCount = findViewById(R.id.tvDataActiveCount)
         tvAppActiveCount = findViewById(R.id.tvAppActiveCount)
 
-        // Section 4: System Health & Invariants
-        cardCoreSecurity = findViewById(R.id.cardCoreSecurity)
-        tvCoreSecurityCardSub = findViewById(R.id.tvCoreSecurityCardSub)
-        tvCoreSecurityCardBadge = findViewById(R.id.tvCoreSecurityCardBadge)
-
-        // Section 5: Advanced Monitoring (16 Medium Layers)
-        tvMediumActiveCount = findViewById(R.id.tvMediumActiveCount)
-        cardMediumSecurity = findViewById(R.id.cardMediumSecurity)
-        tvMediumSecurityCardSub = findViewById(R.id.tvMediumSecurityCardSub)
-        tvMediumSecurityCardBadge = findViewById(R.id.tvMediumSecurityCardBadge)
-
-        // Section 6: Hardware & Deep OS Defense (14 Hard Layers)
+        // Section 4: Hardware & Deep OS Defense (14 Hard Layers)
         tvHardActiveCount = findViewById(R.id.tvHardActiveCount)
         cardHardSecurity = findViewById(R.id.cardHardSecurity)
         tvHardSecurityCardSub = findViewById(R.id.tvHardSecurityCardSub)
@@ -252,14 +230,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, BrowserVaultActivity::class.java))
         }
 
-        cardCoreSecurity.setOnClickListener {
-            startActivity(Intent(this, CoreSecurityActivity::class.java))
-        }
-
-        cardMediumSecurity.setOnClickListener {
-            startActivity(Intent(this, MediumSecurityActivity::class.java))
-        }
-
         cardHardSecurity.setOnClickListener {
             startActivity(Intent(this, HardSecurityActivity::class.java))
         }
@@ -275,7 +245,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navProtection.setOnClickListener {
-            startActivity(Intent(this, CoreSecurityActivity::class.java))
+            startActivity(Intent(this, HardSecurityActivity::class.java))
         }
 
         navSettings.setOnClickListener {
@@ -366,16 +336,6 @@ class MainActivity : AppCompatActivity() {
             tvBrowserCardBadge.text = "OPTIMAL"
             tvBrowserCardBadge.setTextColor(Color.parseColor("#81C995"))
             tvBrowserCardSub.text = "Web cache and browsing parameters nominal"
-
-            tvCoreSecurityCardBadge.text = "OPTIMAL"
-            tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvCoreSecurityCardSub.text = "Device state, zero-wipe invariant & safe mode verified"
-
-            tvMediumActiveCount.text = "SECURE"
-            tvMediumActiveCount.setTextColor(Color.parseColor("#81C995"))
-            tvMediumSecurityCardBadge.text = "SECURE"
-            tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvMediumSecurityCardSub.text = "SQLite WAL, Hardware Keystore & local evidence vault normal"
 
             tvHardActiveCount.text = "OPTIMAL"
             tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
@@ -531,8 +491,10 @@ class MainActivity : AppCompatActivity() {
         if (hasUsage) appActive++
         if (lockedCount > 0) appActive++
 
-        val totalActive = coreActive + dataActive + appActive
-        tvStatModules.text = "$totalActive/9 active"
+        val isCamGranted = IntruderCaptureManager.isCameraPermissionGranted(this)
+        val hardActive = if (isCamGranted) 1 else 0
+        val totalActive = coreActive + dataActive + appActive + hardActive
+        tvStatModules.text = "$totalActive/10 active"
 
         tvCoreActiveCount.text = "$coreActive/3 active"
         tvCoreActiveCount.setTextColor(if (coreActive == 3) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
@@ -543,7 +505,6 @@ class MainActivity : AppCompatActivity() {
         tvAppActiveCount.text = "$appActive/2 active"
         tvAppActiveCount.setTextColor(if (appActive == 2) Color.parseColor("#81C995") else Color.parseColor("#7A7F8E"))
 
-        val isCamGranted = IntruderCaptureManager.isCameraPermissionGranted(this)
         if (isCamGranted) {
             tvHardActiveCount.text = "ARMED"
             tvHardActiveCount.setTextColor(Color.parseColor("#81C995"))
@@ -556,16 +517,6 @@ class MainActivity : AppCompatActivity() {
             tvHardSecurityCardBadge.setTextColor(Color.parseColor("#FDD663"))
         }
         tvHardSecurityCardSub.text = "Camera/Mic monitors, Canary honeypot & self-test diagnostics"
-
-        tvMediumActiveCount.text = "SECURE"
-        tvMediumActiveCount.setTextColor(Color.parseColor("#81C995"))
-        tvMediumSecurityCardBadge.text = "SECURE"
-        tvMediumSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-        tvMediumSecurityCardSub.text = "SQLite WAL database engine & Hardware Keystore TEE"
-
-        tvCoreSecurityCardBadge.text = "OPTIMAL"
-        tvCoreSecurityCardBadge.setTextColor(Color.parseColor("#81C995"))
-        tvCoreSecurityCardSub.text = "Zero-wipe invariant, root scanner & safe mode recovery"
 
         // Threats detected (intruder snaps + non-PlayStore sideloaded apps)
         var threatCount = intruderCount

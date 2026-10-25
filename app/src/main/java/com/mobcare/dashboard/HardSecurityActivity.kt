@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mobcare.R
 import com.mobcare.security.HardSecurityEngine
 import java.io.File
+import java.util.Locale
 
 /**
  * HardSecurityActivity presents the 14 Level-3 and Level-4 (Hard & Hardest)
@@ -32,16 +34,19 @@ class HardSecurityActivity : AppCompatActivity() {
     private lateinit var tvMicSensorStatus: TextView
 
     private lateinit var btnRunDiagnostics: Button
-    private lateinit var btnExportVaultBackup: Button
     private lateinit var btnGenerateAuditReport: Button
+    private lateinit var btnExportVaultBackup: Button
+    private lateinit var btnRestoreVaultBackup: Button
 
     // Category 1
+    private lateinit var cardHoneypot: LinearLayout
     private lateinit var tvSensorDetails: TextView
     private lateinit var badgeSensor: TextView
     private lateinit var tvHoneypotDetails: TextView
     private lateinit var badgeHoneypot: TextView
 
     // Category 2
+    private lateinit var cardDataFlow: LinearLayout
     private lateinit var tvNetworkDefenseDetails: TextView
     private lateinit var badgeNetworkDefense: TextView
     private lateinit var tvDataFlowDetails: TextView
@@ -84,12 +89,14 @@ class HardSecurityActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         HardSecurityEngine.startSensorMonitoring(this)
+        HardSecurityEngine.startCanaryFileObserver(this)
         refreshAllLayers()
     }
 
     override fun onPause() {
         super.onPause()
         HardSecurityEngine.stopSensorMonitoring(this)
+        HardSecurityEngine.stopCanaryFileObserver()
     }
 
     private fun initViews() {
@@ -100,16 +107,19 @@ class HardSecurityActivity : AppCompatActivity() {
         tvMicSensorStatus = findViewById(R.id.tvMicSensorStatus)
 
         btnRunDiagnostics = findViewById(R.id.btnRunDiagnostics)
-        btnExportVaultBackup = findViewById(R.id.btnExportVaultBackup)
         btnGenerateAuditReport = findViewById(R.id.btnGenerateAuditReport)
+        btnExportVaultBackup = findViewById(R.id.btnExportVaultBackup)
+        btnRestoreVaultBackup = findViewById(R.id.btnRestoreVaultBackup)
 
         // Category 1
+        cardHoneypot = findViewById(R.id.cardHoneypot)
         tvSensorDetails = findViewById(R.id.tvSensorDetails)
         badgeSensor = findViewById(R.id.badgeSensor)
         tvHoneypotDetails = findViewById(R.id.tvHoneypotDetails)
         badgeHoneypot = findViewById(R.id.badgeHoneypot)
 
         // Category 2
+        cardDataFlow = findViewById(R.id.cardDataFlow)
         tvNetworkDefenseDetails = findViewById(R.id.tvNetworkDefenseDetails)
         badgeNetworkDefense = findViewById(R.id.badgeNetworkDefense)
         tvDataFlowDetails = findViewById(R.id.tvDataFlowDetails)
@@ -151,12 +161,24 @@ class HardSecurityActivity : AppCompatActivity() {
             runDiagnostics()
         }
 
+        btnGenerateAuditReport.setOnClickListener {
+            showFormalAuditReport()
+        }
+
         btnExportVaultBackup.setOnClickListener {
             exportVaultBackup()
         }
 
-        btnGenerateAuditReport.setOnClickListener {
-            showFormalAuditReport()
+        btnRestoreVaultBackup.setOnClickListener {
+            showRestoreBackupDialog()
+        }
+
+        cardHoneypot.setOnClickListener {
+            showHoneypotStatusDialog()
+        }
+
+        cardDataFlow.setOnClickListener {
+            showTrafficTelemetryDialog()
         }
     }
 
@@ -194,12 +216,12 @@ class HardSecurityActivity : AppCompatActivity() {
         val honeypotStatus = HardSecurityEngine.deployOrVerifyCanaryHoneypot(this)
         when (honeypotStatus) {
             HardSecurityEngine.HoneypotStatus.ARMED -> {
-                tvHoneypotDetails.text = "Decoy token 'canary_credentials.vault' • SHA-256 verified"
+                tvHoneypotDetails.text = "Dual Canary active (Internal + External) • Live FileObserver hook • Tap to inspect"
                 badgeHoneypot.text = "ARMED"
                 badgeHoneypot.setTextColor(Color.parseColor("#4CAF50"))
             }
             HardSecurityEngine.HoneypotStatus.TRIPPED -> {
-                tvHoneypotDetails.text = "ALERT: Canary file integrity altered or read by unauthorized app!"
+                tvHoneypotDetails.text = "ALERT: Canary file integrity altered or read by unauthorized app! Tap to reset"
                 badgeHoneypot.text = "TRIPPED"
                 badgeHoneypot.setTextColor(Color.parseColor("#F28B82"))
             }
@@ -216,11 +238,12 @@ class HardSecurityActivity : AppCompatActivity() {
 
         // Data Flow (Layer 12)
         val topTraffic = HardSecurityEngine.getAppTrafficAudit(this, 3)
+        val (persistedCount, _) = HardSecurityEngine.getPersistedTrafficSummary(this)
         if (topTraffic.isNotEmpty()) {
             val topApp = topTraffic.first()
-            tvDataFlowDetails.text = "Active meter • Top: ${topApp.appName} (${topApp.totalMb} MB)"
+            tvDataFlowDetails.text = "Top: ${topApp.appName} (${topApp.totalMb} MB) • $persistedCount SQLite snapshots • Tap to view"
         } else {
-            tvDataFlowDetails.text = "TrafficStats active • Zero anomalous background leakers"
+            tvDataFlowDetails.text = "TrafficStats active • $persistedCount SQLite snapshots • Tap to view"
         }
         badgeDataFlow.text = "ARMED"
 
@@ -330,6 +353,137 @@ class HardSecurityActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Backup Failed: ${result.message}", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun showRestoreBackupDialog() {
+        val backups = HardSecurityEngine.listAvailableBackups(this)
+        if (backups.isEmpty()) {
+            AlertDialog.Builder(this)
+                .setTitle("No Vault Backups Found")
+                .setMessage("No .mbvault archive found in secure storage. Create an encrypted backup first using the 'BACKUP (.MBVAULT)' button.")
+                .setPositiveButton("OK") { d, _ -> d.dismiss() }
+                .show()
+            return
+        }
+
+        val fileNames = backups.map { file ->
+            val sizeKb = (file.length() / 1024L).coerceAtLeast(1L)
+            "${file.name} (${sizeKb} KB)"
+        }.toTypedArray()
+
+        var selectedIndex = 0
+        AlertDialog.Builder(this)
+            .setTitle("Select .mbvault Archive to Restore")
+            .setSingleChoiceItems(fileNames, 0) { _, which ->
+                selectedIndex = which
+            }
+            .setPositiveButton("RESTORE") { _, _ ->
+                val selectedFile = backups[selectedIndex]
+                confirmAndExecuteRestore(selectedFile)
+            }
+            .setNegativeButton("CANCEL") { d, _ -> d.dismiss() }
+            .show()
+    }
+
+    private fun confirmAndExecuteRestore(backupFile: File) {
+        AlertDialog.Builder(this)
+            .setTitle("Confirm Vault Restore")
+            .setMessage(
+                "Are you sure you want to restore records from '${backupFile.name}'?\n\n" +
+                "• All historical audit logs, notifications & packages will be merged.\n" +
+                "• Existing records will NOT be overwritten (100% non-destructive).\n" +
+                "• Cipher: Hardware Keystore AES-256 GCM."
+            )
+            .setPositiveButton("CONFIRM RESTORE") { _, _ ->
+                Toast.makeText(this, "Decrypting and merging archive...", Toast.LENGTH_SHORT).show()
+                val result = HardSecurityEngine.restoreCryptographicBackup(this, backupFile)
+                if (result.success) {
+                    AlertDialog.Builder(this)
+                        .setTitle("Restore Successful")
+                        .setMessage(
+                            "${result.message}\n\n" +
+                            "• Audit Logs: ${result.restoredAuditCount}\n" +
+                            "• Notifications: ${result.restoredNotifCount}\n" +
+                            "• Package Events: ${result.restoredPackageCount}\n" +
+                            "• Total Merged: ${result.totalRecords}"
+                        )
+                        .setPositiveButton("OK") { d, _ ->
+                            d.dismiss()
+                            refreshAllLayers()
+                        }
+                        .show()
+                } else {
+                    AlertDialog.Builder(this)
+                        .setTitle("Restore Failed")
+                        .setMessage(result.message)
+                        .setPositiveButton("OK") { d, _ -> d.dismiss() }
+                        .show()
+                }
+            }
+            .setNegativeButton("CANCEL") { d, _ -> d.dismiss() }
+            .show()
+    }
+
+    private fun showHoneypotStatusDialog() {
+        val status = HardSecurityEngine.deployOrVerifyCanaryHoneypot(this)
+        val sb = StringBuilder()
+        sb.append("DIGITAL HONEYPOT & CANARY SENTINELS\n\n")
+        sb.append("• Internal Canary Token: canary_credentials.vault\n")
+        sb.append("  Location: Sandboxed App Storage\n\n")
+        sb.append("• External Storage Decoy: decoy_wallet_backup.dat\n")
+        sb.append("  Location: External App Storage\n\n")
+        sb.append("• Live FileObserver: ACTIVE\n")
+        sb.append("  Monitoring kernel-level file modifications, attributes & deletions in real time.\n\n")
+        sb.append("• Current Status: ${status.name}\n")
+        if (status == HardSecurityEngine.HoneypotStatus.TRIPPED) {
+            sb.append("  ⚠ WARNING: An unauthorized process or scanner accessed or altered a decoy honey-token!\n")
+        } else {
+            sb.append("  ✓ All decoy tokens uncompromised with verified SHA-256 integrity.\n")
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle("Canary Honeypot Sentinels")
+            .setMessage(sb.toString())
+            .setPositiveButton("CLOSE") { d, _ -> d.dismiss() }
+            .setNeutralButton("RE-ARM CANARIES") { _, _ ->
+                val ok = HardSecurityEngine.resetCanaryHoneypot(this)
+                if (ok) {
+                    Toast.makeText(this, "Canary tokens re-armed with fresh hashes!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Failed to re-arm canaries.", Toast.LENGTH_SHORT).show()
+                }
+                refreshAllLayers()
+            }
+            .show()
+    }
+
+    private fun showTrafficTelemetryDialog() {
+        val liveApps = HardSecurityEngine.getAppTrafficAudit(this, 10)
+        val (persistedCount, persistedMb) = HardSecurityEngine.getPersistedTrafficSummary(this)
+
+        val sb = StringBuilder()
+        sb.append("LIVE NETWORK LEAKER METRICS (TrafficStats):\n\n")
+        liveApps.take(5).forEachIndexed { i, app ->
+            sb.append("${i + 1}. ${app.appName}\n")
+            sb.append("   ↓ Download: ${app.rxMb} MB | ↑ Upload: ${app.txMb} MB | Total: ${app.totalMb} MB\n\n")
+        }
+
+        sb.append("----------------------------------------------------\n")
+        sb.append("PERSISTED SQLITE TELEMETRY:\n")
+        sb.append("• Total Snapshots Saved: $persistedCount records\n")
+        sb.append("• Total Persisted Volume: ${String.format(Locale.US, "%.2f", persistedMb)} MB\n")
+        sb.append("• Offline-First: Preserved safely across device reboots.\n")
+
+        AlertDialog.Builder(this)
+            .setTitle("Data Flow & Traffic Telemetry")
+            .setMessage(sb.toString().trim())
+            .setPositiveButton("CLOSE") { d, _ -> d.dismiss() }
+            .setNeutralButton("SNAPSHOT NOW") { _, _ ->
+                val savedCount = HardSecurityEngine.persistCurrentTrafficSnapshot(this)
+                Toast.makeText(this, "Saved snapshot of $savedCount apps to SQLite vault!", Toast.LENGTH_SHORT).show()
+                refreshAllLayers()
+            }
+            .show()
     }
 
     private fun showFormalAuditReport() {

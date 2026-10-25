@@ -20,7 +20,7 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
 
     companion object {
         const val DATABASE_NAME = "mobcare_secure_vault.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
 
         // Table 1: Keystroke & System Audit Events
         const val TABLE_AUDIT = "audit_events"
@@ -52,6 +52,17 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
         const val COL_PKG_TIME = "timestamp"
         const val COL_PKG_EPOCH = "epoch_ms"
 
+        // Table 4: App Data Traffic History (Layer 12 Persistence)
+        const val TABLE_TRAFFIC = "traffic_history"
+        const val COL_TRAFFIC_ID = "id"
+        const val COL_TRAFFIC_PKG = "package_name"
+        const val COL_TRAFFIC_APP = "app_name"
+        const val COL_TRAFFIC_RX_MB = "rx_mb"
+        const val COL_TRAFFIC_TX_MB = "tx_mb"
+        const val COL_TRAFFIC_TOTAL_MB = "total_mb"
+        const val COL_TRAFFIC_TIME = "timestamp"
+        const val COL_TRAFFIC_EPOCH = "epoch_ms"
+
         @Volatile
         private var instance: MobCareSecurityDatabase? = null
 
@@ -60,6 +71,7 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
                 instance ?: MobCareSecurityDatabase(context.applicationContext).also {
                     instance = it
                     it.enableWal()
+                    it.createTrafficTableIfNotExists()
                     it.migrateLegacyJsonFiles()
                 }
             }
@@ -117,6 +129,23 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
             )
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_pkg_epoch ON $TABLE_PACKAGES($COL_PKG_EPOCH);")
 
+            // Create Table 4 (Traffic History)
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS $TABLE_TRAFFIC (
+                    $COL_TRAFFIC_ID TEXT PRIMARY KEY,
+                    $COL_TRAFFIC_PKG TEXT NOT NULL,
+                    $COL_TRAFFIC_APP TEXT NOT NULL,
+                    $COL_TRAFFIC_RX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TOTAL_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TIME TEXT NOT NULL,
+                    $COL_TRAFFIC_EPOCH INTEGER NOT NULL
+                );
+                """.trimIndent()
+            )
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_traffic_epoch ON $TABLE_TRAFFIC($COL_TRAFFIC_EPOCH);")
+
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -124,7 +153,45 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Safe migration: Preserves existing data across app updates
+        if (oldVersion < 2) {
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS $TABLE_TRAFFIC (
+                    $COL_TRAFFIC_ID TEXT PRIMARY KEY,
+                    $COL_TRAFFIC_PKG TEXT NOT NULL,
+                    $COL_TRAFFIC_APP TEXT NOT NULL,
+                    $COL_TRAFFIC_RX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TOTAL_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TIME TEXT NOT NULL,
+                    $COL_TRAFFIC_EPOCH INTEGER NOT NULL
+                );
+                """.trimIndent()
+            )
+            db.execSQL("CREATE INDEX IF NOT EXISTS idx_traffic_epoch ON $TABLE_TRAFFIC($COL_TRAFFIC_EPOCH);")
+        }
+    }
+
+    private fun createTrafficTableIfNotExists() {
+        try {
+            writableDatabase.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS $TABLE_TRAFFIC (
+                    $COL_TRAFFIC_ID TEXT PRIMARY KEY,
+                    $COL_TRAFFIC_PKG TEXT NOT NULL,
+                    $COL_TRAFFIC_APP TEXT NOT NULL,
+                    $COL_TRAFFIC_RX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TX_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TOTAL_MB REAL NOT NULL,
+                    $COL_TRAFFIC_TIME TEXT NOT NULL,
+                    $COL_TRAFFIC_EPOCH INTEGER NOT NULL
+                );
+                """.trimIndent()
+            )
+            writableDatabase.execSQL("CREATE INDEX IF NOT EXISTS idx_traffic_epoch ON $TABLE_TRAFFIC($COL_TRAFFIC_EPOCH);")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun enableWal() {
@@ -374,6 +441,90 @@ class MobCareSecurityDatabase private constructor(private val appContext: Contex
         return list
     }
 
+    // --- App Traffic History Methods (Layer 12 Persistence) ---
+
+    fun insertTrafficSnapshot(pkg: String, appName: String, rxMb: Double, txMb: Double, totalMb: Double, timeFormatted: String) {
+        try {
+            val db = writableDatabase
+            val values = ContentValues().apply {
+                put(COL_TRAFFIC_ID, System.currentTimeMillis().toString() + "_" + (100..999).random())
+                put(COL_TRAFFIC_PKG, pkg)
+                put(COL_TRAFFIC_APP, appName)
+                put(COL_TRAFFIC_RX_MB, rxMb)
+                put(COL_TRAFFIC_TX_MB, txMb)
+                put(COL_TRAFFIC_TOTAL_MB, totalMb)
+                put(COL_TRAFFIC_TIME, timeFormatted)
+                put(COL_TRAFFIC_EPOCH, System.currentTimeMillis())
+            }
+            db.insertWithOnConflict(TABLE_TRAFFIC, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getTrafficHistoryCount(): Int {
+        return try {
+            val cursor = readableDatabase.rawQuery("SELECT COUNT(*) FROM $TABLE_TRAFFIC", null)
+            val count = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+            cursor.close()
+            count
+        } catch (e: Exception) {
+            0
+        }
+    }
+
+    fun getAllTrafficRecords(limit: Int = 100): List<TrafficHistoryRecord> {
+        val list = mutableListOf<TrafficHistoryRecord>()
+        try {
+            val db = readableDatabase
+            val cursor = db.query(
+                TABLE_TRAFFIC,
+                null,
+                null,
+                null,
+                null,
+                null,
+                "$COL_TRAFFIC_EPOCH DESC",
+                limit.toString()
+            )
+            while (cursor.moveToNext()) {
+                list.add(
+                    TrafficHistoryRecord(
+                        id = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRAFFIC_ID)),
+                        packageName = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRAFFIC_PKG)),
+                        appName = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRAFFIC_APP)),
+                        rxMb = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_TRAFFIC_RX_MB)),
+                        txMb = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_TRAFFIC_TX_MB)),
+                        totalMb = cursor.getDouble(cursor.getColumnIndexOrThrow(COL_TRAFFIC_TOTAL_MB)),
+                        timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COL_TRAFFIC_TIME)),
+                        epochMs = cursor.getLong(cursor.getColumnIndexOrThrow(COL_TRAFFIC_EPOCH))
+                    )
+                )
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return list
+    }
+
+    fun getPersistedTrafficSummary(): Pair<Int, Double> {
+        return try {
+            val db = readableDatabase
+            val cursor = db.rawQuery("SELECT COUNT(*), SUM($COL_TRAFFIC_TOTAL_MB) FROM $TABLE_TRAFFIC", null)
+            var count = 0
+            var sum = 0.0
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0)
+                sum = cursor.getDouble(1)
+            }
+            cursor.close()
+            Pair(count, sum)
+        } catch (e: Exception) {
+            Pair(0, 0.0)
+        }
+    }
+
     /**
      * Seamless backward compatibility: Migrates existing JSON records to SQLite so zero user logs are lost.
      */
@@ -429,5 +580,16 @@ data class PackageEventRecord(
     val action: String,
     val isSideload: Boolean,
     val timestamp: String
+)
+
+data class TrafficHistoryRecord(
+    val id: String,
+    val packageName: String,
+    val appName: String,
+    val rxMb: Double,
+    val txMb: Double,
+    val totalMb: Double,
+    val timestamp: String,
+    val epochMs: Long
 )
 
