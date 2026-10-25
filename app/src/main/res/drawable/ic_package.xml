@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Package/box icon for Package Guardian -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#8AB4F8"
+        android:pathData="M21,16.5c0,0.38 -0.21,0.71 -0.53,0.88l-7.9,4.44c-0.16,0.09 -0.34,0.14 -0.57,0.14 -0.23,0 -0.41,-0.05 -0.57,-0.14L3.53,17.38C3.21,17.21 3,16.88 3,16.5v-9c0,-0.38 0.21,-0.71 0.53,-0.88l7.9,-4.44C11.59,2.05 11.77,2 12,2c0.23,0 0.41,0.05 0.57,0.14l7.9,4.44c0.32,0.17 0.53,0.5 0.53,0.88v9zM12,4.15L9.04,5.75L12,7.35l2.96,-1.6L12,4.15zM5,15.91l6,3.38v-6.71L5,9.21v6.7zM19,15.91V9.21l-6,3.38v6.71l6,-3.39z" />
+</vector>

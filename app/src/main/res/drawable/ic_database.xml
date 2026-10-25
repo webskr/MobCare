@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Database/cylinder icon for Data & Privacy section -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M12,2C8.13,2 5,3.12 5,4.5v15C5,20.88 8.13,22 12,22s7,-1.12 7,-2.5v-15C19,3.12 15.87,2 12,2zM12,4c2.89,0 5.35,0.79 5.35,1.5S14.89,7 12,7 6.65,6.21 6.65,5.5 9.11,4 12,4zM12,20c-2.89,0 -5.35,-0.79 -5.35,-1.5v-2.2c1.38,0.7 3.27,1.2 5.35,1.2s3.97,-0.5 5.35,-1.2v2.2C17.35,19.21 14.89,20 12,20z" />
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M12,9.5c-2.89,0 -5.35,-0.79 -5.35,-1.5v-2c1.38,0.7 3.27,1.2 5.35,1.2s3.97,-0.5 5.35,-1.2V8C17.35,8.71 14.89,9.5 12,9.5z" />
+    <path
+        android:fillColor="#9AA0A6"
+        android:pathData="M12,13c-2.89,0 -5.35,-0.79 -5.35,-1.5v-2c1.38,0.7 3.27,1.2 5.35,1.2s3.97,-0.5 5.35,-1.2V11.5C17.35,12.21 14.89,13 12,13z" />
+</vector>

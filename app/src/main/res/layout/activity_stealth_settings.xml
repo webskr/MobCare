@@ -366,6 +366,74 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Section 4.5: Identity Camouflage (No Launcher Required) -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#1E1F24">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="6dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Identity Camouflage"
+                        android:textColor="#F1F3F4"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/tvSwapBadge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_pill_button"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="READY"
+                        android:textColor="#8AB4F8"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disguise MobCare as any app on your phone (e.g. Calculator, Notes). Clicking the disguise icon will show a dummy screen; enter your secret PIN to access MobCare. No launcher required."
+                    android:textColor="#9AA0A6"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="3dp"
+                    android:layout_marginBottom="16dp" />
+
+                <Button
+                    android:id="@+id/btnConfigureSwap"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="Configure Camouflage"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#8AB4F8"
+                    android:textColor="#0E0F13" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- Section 5: Intruder Photo Snaps (Front Camera Vault) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

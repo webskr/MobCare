@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0B0E"
+    android:fitsSystemWindows="true">
+
+    <!-- Top Navigation Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_stat_icon"
+            android:src="@drawable/ic_chevron_right"
+            android:rotation="180"
+            app:tint="#ECEEF4"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Identity Swapper"
+                android:textColor="#ECEEF4"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disguise MobCare as any installed app"
+                android:textColor="#7A7F8E"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Active Disguise Overview Card -->
+    <LinearLayout
+        android:id="@+id/cardActiveSwap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_badge_blue_dark"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CURRENT LAUNCHER IDENTITY"
+            android:textColor="#8AB4F8"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/ivCurrentIdentityIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCurrentIdentityName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MobCare (Default)"
+                    android:textColor="#ECEEF4"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/tvCurrentIdentitySub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No identity swap active"
+                    android:textColor="#7A7F8E"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnRevertSwap"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Restore"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:backgroundTint="#F28B82"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Apps Selection Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="CHOOSE APP TO DISGUISE AS"
+        android:textColor="#7A7F8E"
+        android:textSize="11sp"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.06" />
+
+    <!-- Shortcut hint (shown when no camouflage active) -->
+    <TextView
+        android:id="@+id/tvShortcutHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_badge_blue_dark"
+        android:padding="12dp"
+        android:text="Tap any app below. A disguised shortcut will be pinned on your Home Screen. Your secret PIN unlocks the real MobCare."
+        android:textColor="#8AB4F8"
+        android:textSize="12sp"
+        android:lineSpacingExtra="2dp"
+        android:visibility="gone" />
+
+    <!-- Search box -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_stat_icon"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:tint="#7A7F8E"
+            android:contentDescription="@null" />
+
+        <EditText
+            android:id="@+id/etSearchTargetApps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:hint="Search apps to clone..."
+            android:textColorHint="#5F6368"
+            android:textColor="#ECEEF4"
+            android:textSize="13sp"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pbLoadingTargets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+
+    <!-- Apps List for selection -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTargetApps"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

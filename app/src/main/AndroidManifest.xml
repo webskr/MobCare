@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -73,16 +75,1334 @@
             android:showOnLockScreen="true"
             android:screenOrientation="portrait" />
 
+        <!-- Identity Camouflage Activity (NO longer a Home Launcher) -->
+        <activity
+            android:name=".launcher.ui.HomeLauncherActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/Theme.MobCare"
+            android:exported="false" />
+
+        <!-- App Identity Swapper (Camouflage Config) Activity -->
+        <activity
+            android:name=".launcher.ui.IdentitySwapActivity"
+            android:theme="@style/Theme.MobCare"
+            android:exported="false" />
+
+        <!-- Camouflage Gate (Fake Calculator Dummy Screen) — opened by pinned shortcut -->
+        <activity
+            android:name=".launcher.ui.CamouflageGateActivity"
+            android:theme="@style/Theme.MobCare"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.mobcare.camouflage"
+            android:exported="true" />
+
         <!-- Master Hub Activity -->
         <activity
             android:name=".dashboard.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="true" />
+
+        <!-- Dynamic Camouflage Activity Aliases (10 Icons x 10 Names) -->
+        <activity-alias
+            android:name=".alias.I_default_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="@string/app_name"
+            android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_default_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_browser_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_browser"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_clock_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_clock"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_compass_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_compass"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_files_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_files"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_google_one_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_google_one"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_radio_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_radio"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_secure_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_secure"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_setting_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_setting"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_default"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_browser"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Browser"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_clock"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Clock"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_compass"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Compass"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_files"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Files"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_google_one"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Google One"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_radio"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Radio"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_secure"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Security"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_setting"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Settings"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".alias.I_weather_N_weather"
+            android:targetActivity=".dashboard.MainActivity"
+            android:icon="@drawable/ic_alias_weather"
+            android:label="Weather"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- Dedicated Feature Activities -->
         <activity

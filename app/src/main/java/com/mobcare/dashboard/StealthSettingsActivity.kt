@@ -34,6 +34,8 @@ import com.mobcare.security.IntruderCaptureManager
 import com.mobcare.security.IntruderRecord
 import com.mobcare.security.StealthManager
 import com.mobcare.security.MobCareAccessibilityService
+import com.mobcare.launcher.data.IdentitySwapManager
+import com.mobcare.launcher.ui.IdentitySwapActivity
 import java.io.File
 
 class StealthSettingsActivity : AppCompatActivity() {
@@ -58,6 +60,9 @@ class StealthSettingsActivity : AppCompatActivity() {
     private lateinit var tvScreenshotBadge: TextView
     private lateinit var btnTakeSilentScreenshot: Button
     private lateinit var btnViewScreenshots: Button
+
+    private lateinit var tvSwapBadge: TextView
+    private lateinit var btnConfigureSwap: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +98,13 @@ class StealthSettingsActivity : AppCompatActivity() {
         tvScreenshotBadge = findViewById(R.id.tvScreenshotBadge)
         btnTakeSilentScreenshot = findViewById(R.id.btnTakeSilentScreenshot)
         btnViewScreenshots = findViewById(R.id.btnViewScreenshots)
+
+        tvSwapBadge = findViewById(R.id.tvSwapBadge)
+        btnConfigureSwap = findViewById(R.id.btnConfigureSwap)
+
+        btnConfigureSwap.setOnClickListener {
+            startActivity(Intent(this, IdentitySwapActivity::class.java))
+        }
 
         btnTakeSilentScreenshot.setOnClickListener {
             if (MobCareAccessibilityService.instance == null) {
@@ -283,6 +295,18 @@ class StealthSettingsActivity : AppCompatActivity() {
             btnGrantCamera.visibility = View.VISIBLE
             tvIntruderBadge.text = "PERMISSION NEEDED"
             tvIntruderBadge.setTextColor(Color.parseColor("#FDD663"))
+        }
+
+        // Identity Swap Status
+        val activeSwap = IdentitySwapManager.getActiveSwap(this)
+        if (activeSwap != null && activeSwap.isActive) {
+            tvSwapBadge.text = "SWAPPED"
+            tvSwapBadge.setTextColor(Color.parseColor("#81C995"))
+            btnConfigureSwap.text = "Cloaked: ${activeSwap.customLabel}"
+        } else {
+            tvSwapBadge.text = "READY"
+            tvSwapBadge.setTextColor(Color.parseColor("#8AB4F8"))
+            btnConfigureSwap.text = "Identity Swapper"
         }
     }
 

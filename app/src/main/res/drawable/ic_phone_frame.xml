@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phone frame outline for device status card -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="110dp"
+    android:viewportWidth="80"
+    android:viewportHeight="110">
+    <!-- Phone outline -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#3A3D48"
+        android:strokeWidth="2.5"
+        android:pathData="M10,8 Q10,4 14,4 L66,4 Q70,4 70,8 L70,102 Q70,106 66,106 L14,106 Q10,106 10,102 Z" />
+    <!-- Camera notch -->
+    <path
+        android:fillColor="#3A3D48"
+        android:pathData="M33,7.5 Q33,6 34.5,6 L45.5,6 Q47,6 47,7.5 L47,9 Q47,10.5 45.5,10.5 L34.5,10.5 Q33,10.5 33,9 Z" />
+    <!-- Screen area -->
+    <path
+        android:fillColor="#1A1C22"
+        android:pathData="M15,14 L65,14 L65,96 L15,96 Z" />
+    <!-- Home indicator -->
+    <path
+        android:fillColor="#3A3D48"
+        android:pathData="M33,99 L47,99"
+        android:strokeColor="#3A3D48"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+</vector>

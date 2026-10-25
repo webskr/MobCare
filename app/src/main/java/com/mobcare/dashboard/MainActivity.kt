@@ -20,11 +20,11 @@ import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.mobcare.R
@@ -42,52 +42,72 @@ import com.mobcare.security.StealthManager
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tvHubStatusBadge: TextView
+    // Header
+    private lateinit var tvHubStatusBadge: LinearLayout
+    private lateinit var tvProtectedLabel: TextView
 
-    // Card 1: Keyboard
-    private lateinit var cardKeyboardHub: CardView
+    // Device Status Stats
+    private lateinit var tvStatModules: TextView
+    private lateinit var tvStatThreats: TextView
+    private lateinit var tvStatEvents: TextView
+    private lateinit var tvStatSync: TextView
+    private lateinit var tvDeviceStatusSub: TextView
+
+    // Row 1: Keyboard
+    private lateinit var cardKeyboardHub: LinearLayout
     private lateinit var tvKeyboardCardSub: TextView
     private lateinit var tvKeyboardCardBadge: TextView
 
-    // Card 2: Package Guardian
-    private lateinit var cardPackageGuardian: CardView
+    // Row 2: Package Guardian
+    private lateinit var cardPackageGuardian: LinearLayout
     private lateinit var tvPackageCardSub: TextView
     private lateinit var tvPackageCardBadge: TextView
 
-    // Card 3: Stealth & Anti-Tamper
-    private lateinit var cardStealthEngine: CardView
+    // Row 3: Stealth & Anti-Tamper
+    private lateinit var cardStealthEngine: LinearLayout
     private lateinit var tvStealthCardSub: TextView
     private lateinit var tvStealthCardBadge: TextView
 
-    // Card 4: Notification Vault
-    private lateinit var cardNotificationVault: CardView
+    // Row 4: Notification Vault
+    private lateinit var cardNotificationVault: LinearLayout
     private lateinit var tvNotificationCardSub: TextView
     private lateinit var tvNotificationCardBadge: TextView
 
-    // Card 5: Cloud Sync
-    private lateinit var cardCloudSync: CardView
+    // Row 5: Cloud Sync
+    private lateinit var cardCloudSync: LinearLayout
     private lateinit var tvCloudSyncCardSub: TextView
     private lateinit var tvCloudSyncCardBadge: TextView
 
-    // Card 6: App Timeline Inspector
-    private lateinit var cardAppTimeline: CardView
+    // Row 6: App Timeline Inspector
+    private lateinit var cardAppTimeline: LinearLayout
     private lateinit var tvTimelineCardSub: TextView
     private lateinit var tvTimelineCardBadge: TextView
 
-    // Card 7: App Locker Sentinel
-    private lateinit var cardAppLocker: CardView
+    // Row 7: App Locker Sentinel
+    private lateinit var cardAppLocker: LinearLayout
     private lateinit var tvLockerCardSub: TextView
     private lateinit var tvLockerCardBadge: TextView
 
-    // Card 8: Call & SMS Vault
-    private lateinit var cardCallSmsVault: CardView
+    // Row 8: Call & SMS Vault (hidden)
+    private lateinit var cardCallSmsVault: LinearLayout
     private lateinit var tvCallSmsCardSub: TextView
     private lateinit var tvCallSmsCardBadge: TextView
 
-    // Card 9: Web Intelligence
-    private lateinit var cardBrowserVault: CardView
+    // Row 9: Web Intelligence (hidden)
+    private lateinit var cardBrowserVault: LinearLayout
     private lateinit var tvBrowserCardSub: TextView
     private lateinit var tvBrowserCardBadge: TextView
+
+    // Section counts
+    private lateinit var tvCoreActiveCount: TextView
+    private lateinit var tvDataActiveCount: TextView
+    private lateinit var tvAppActiveCount: TextView
+
+    // Bottom Nav
+    private lateinit var navHome: LinearLayout
+    private lateinit var navActivity: LinearLayout
+    private lateinit var navProtection: LinearLayout
+    private lateinit var navSettings: LinearLayout
 
     private var isSessionUnlocked = false
 
@@ -95,8 +115,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Header
         tvHubStatusBadge = findViewById(R.id.tvHubStatusBadge)
+        tvProtectedLabel = findViewById(R.id.tvProtectedLabel)
 
+        // Device status stats
+        tvDeviceStatusSub = findViewById(R.id.tvDeviceStatusSub)
+        tvStatModules = findViewById(R.id.tvStatModules)
+        tvStatThreats = findViewById(R.id.tvStatThreats)
+        tvStatEvents = findViewById(R.id.tvStatEvents)
+        tvStatSync = findViewById(R.id.tvStatSync)
+
+        // Feature rows
         cardKeyboardHub = findViewById(R.id.cardKeyboardHub)
         tvKeyboardCardSub = findViewById(R.id.tvKeyboardCardSub)
         tvKeyboardCardBadge = findViewById(R.id.tvKeyboardCardBadge)
@@ -132,6 +162,17 @@ class MainActivity : AppCompatActivity() {
         cardBrowserVault = findViewById(R.id.cardBrowserVault)
         tvBrowserCardSub = findViewById(R.id.tvBrowserCardSub)
         tvBrowserCardBadge = findViewById(R.id.tvBrowserCardBadge)
+
+        // Section counts
+        tvCoreActiveCount = findViewById(R.id.tvCoreActiveCount)
+        tvDataActiveCount = findViewById(R.id.tvDataActiveCount)
+        tvAppActiveCount = findViewById(R.id.tvAppActiveCount)
+
+        // Bottom nav
+        navHome = findViewById(R.id.navHome)
+        navActivity = findViewById(R.id.navActivity)
+        navProtection = findViewById(R.id.navProtection)
+        navSettings = findViewById(R.id.navSettings)
 
         // Card Click Navigations -> Opens Dedicated Screens
         cardKeyboardHub.setOnClickListener {
@@ -195,8 +236,9 @@ class MainActivity : AppCompatActivity() {
     private fun updateHubOverview() {
         // If Duress Sandbox Mode is active, show sanitized/decoy status
         if (StealthManager.isDuressSandboxActive) {
-            tvHubStatusBadge.text = "SYSTEM OPTIMAL"
-            tvHubStatusBadge.setTextColor(Color.parseColor("#81C995"))
+            tvProtectedLabel.text = "OPTIMAL"
+            tvProtectedLabel.setTextColor(Color.parseColor("#81C995"))
+            tvDeviceStatusSub.text = "System nominal"
 
             tvKeyboardCardBadge.text = "ACTIVE"
             tvKeyboardCardBadge.setTextColor(Color.parseColor("#81C995"))
