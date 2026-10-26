@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
     inputs:
       version_name:
-        description: 'Release Version (e.g. v1.0.0)'
+        description: 'Release Version (e.g. v2.0.0)'
         required: true
-        default: 'v1.0.0'
+        default: 'v2.0.0'
 
 permissions:
   contents: write
@@ -44,8 +44,9 @@ jobs:
         id: prepare_apk
         run: |
           VERSION="${{ github.event.inputs.version_name || github.ref_name }}"
-          if [ "$VERSION" = "main" ]; then
-            VERSION="v1.0.0"
+          if [ "$VERSION" = "main" ] || [ -z "$VERSION" ]; then
+            DETECTED_VER=$(grep 'versionName = ' app/build.gradle.kts | sed 's/.*"\(.*\)".*/\1/' | tr -d '[:space:]')
+            VERSION="v${DETECTED_VER}"
           fi
           APK_DIR="app/build/outputs/apk/release"
           APK_NAME="MobCare-${VERSION}.apk"
@@ -78,16 +79,18 @@ jobs:
           body: |
             ### 🛡️ MobCare System Telemetry & Device Protection Sentinel (${{ steps.prepare_apk.outputs.version }})
 
-            Direct downloadable APK built automatically via GitHub Actions CI/CD.
+            Official signed release APK built automatically via GitHub Actions CI/CD.
 
-            #### 📦 Included Features:
-            - **Tactical App Locker Sentinel:** Segmented mode control, Master & Dedicated PIN protection, intruder trap trigger.
-            - **Native Telemetry Keyboard (IME):** QWERTY, Symbol tray, and dedicated 3x4 Numpad with `[ABC]` toggle and verified Enter newline fix.
-            - **Call & SMS Vault:** Anti-deletion persistent ledger for calls and incoming SMS.
-            - **Stealth Cloak:** Device Admin, fake crash screen decoy, and system diagnostics camouflage.
-            - **Silent Sentinel Gallery:** 3-column media vault with full-screen photo inspector.
+            #### 📦 What's New in v2.0.0:
+            - **Unified 4-Tab Bottom Navigation:** Seamless zero-flicker switching between Home, Activity, Protection, and Settings.
+            - **Dedicated Settings & Permissions Hub:** Complete separation of system permissions from stealth settings, with 1-tap live status toggles for Accessibility, Device Admin, Battery Exemption, Overlay, and Usage Access.
+            - **Tactical App Locker & Fake Crash Mode:** Instant realistic Android system crash simulation ("*`<AppName>` keeps stopping*") with exit to home screen.
+            - **Decoy Panic PIN System:** Decoy PIN triggers simulated crash while silently capturing intruder camera selfies and security audit telemetry.
+            - **Secret Owner Bypass:** Long-press on "Close app" or triple-tap the error title to instantly reveal the genuine PIN gate.
+            - **40-Layer Security Defense Matrix:** Core, Advanced & Hardware honeypot layers with complete offline security.
+            - **Consistent Edge-to-Edge Top App Bars:** Removed child back buttons from top-level destinations with fitted, uniform styling.
 
             #### 📲 Installation Instructions:
             1. Download the `MobCare-${{ steps.prepare_apk.outputs.version }}.apk` below.
             2. Tap the downloaded file to install on your Android device (Android 8.0+ / API 26+).
-            3. Grant necessary permissions (Accessibility, Notification Access, Overlay) to arm all security sentinels.
+            3. Grant necessary permissions (Accessibility Sentinel, Overlay, Usage Access) to activate all features.

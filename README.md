@@ -18,7 +18,7 @@
   <b>MobCare</b> is a high-performance, privacy-first Android security sentinel designed for personal device protection, physical tamper defense, honeypot intruder traps, and tactical application locking.
 </p>
 
-### 📥 [Download Latest Release APK (v1.0.0)](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk)
+### 📥 [Download Latest Release APK (v2.0.0)](https://github.com/webskr/MobCare/releases/download/v2.0.0/MobCare-v2.0.0.apk)
 *Ready-to-install signed APK built via GitHub Actions CI/CD*
 
 [View All Releases](https://github.com/webskr/MobCare/releases/latest) • [Report Issue](https://github.com/webskr/MobCare/issues) • [Security Policy](SECURITY.md)
@@ -33,15 +33,12 @@ You can download and install MobCare directly onto your Android device:
 
 | File | Release | Architecture | Direct Download |
 | :--- | :--- | :--- | :--- |
-| **MobCare-v1.0.0.apk** | `v1.0.0` (Latest) | Universal (arm64-v8a, armeabi-v7a, x86_64) | [⬇️ **Download APK**](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk) |
+| **MobCare-v2.0.0.apk** | `v2.0.0` (Latest) | Universal (arm64-v8a, armeabi-v7a, x86_64) | [⬇️ **Download APK**](https://github.com/webskr/MobCare/releases/download/v2.0.0/MobCare-v2.0.0.apk) |
 
 ### How to Install:
-1. Tap the **[Download APK](https://github.com/webskr/MobCare/releases/download/v1.0.0/MobCare-v1.0.0.apk)** button above on your Android phone.
+1. Tap the **[Download APK](https://github.com/webskr/MobCare/releases/download/v2.0.0/MobCare-v2.0.0.apk)** button above on your Android phone.
 2. Open the downloaded `.apk` file and select **Install** *(if prompted, allow "Install from unknown sources" for your browser)*.
-3. Open MobCare and grant the requested Android permissions (Accessibility, Notification Listener, Display Over Other Apps) to activate the security sentinels.
-
----
-
+3. Open MobCare and grant the requested Android permissions (Accessibility Sentinel, Display Over Other Apps, Usage Access) from the **Settings** tab.
 
 ---
 
@@ -70,19 +67,38 @@ If your device settings completely prevent sideloading:
 2. Tap your **Profile Icon** (top right corner).
 3. Select **Play Protect** ➔ Tap the **Settings Gear (⚙️)** at the top right.
 4. Toggle OFF **"Scan apps with Play Protect"**.
-5. Install `MobCare-v1.0.0.apk`.
+5. Install `MobCare-v2.0.0.apk`.
 6. *(Optional)* You can toggle Play Protect back ON after installation.
 
 ## 🌟 Core Feature Highlights
 
-### 1. 🛡️ Tactical App Locker Sentinel
+### 1. 🛡️ Tactical App Locker Sentinel & Fake Crash Decoy
+- **Fake App Crash Mode:** Simulates authentic native Android system crashes (*"`<AppName>` keeps stopping"*) with direct `[Close app]` exit to launcher whenever protected apps are opened.
+- **Dual PIN System (Master PIN & Decoy Panic PIN):**
+  - **Master PIN:** Unlocks protected applications normally.
+  - **Decoy PIN:** Entering the decoy PIN instantly simulates system crash, captures an unauthorized intruder selfie silently with CameraX, and logs a forensic alert.
+- **Secret Owner Bypass:** Long-press on "Close app" or triple-tap the error title to dismiss the fake crash and reveal the genuine PIN gate.
 - **Dual Lock Strategy:**
   - **Always Protected:** Seamless PIN gate interception whenever protected applications are launched.
   - **Intruder Trigger:** Honeypot mode — sensitive apps remain unlocked until an unauthorized physical tamper attempt occurs, after which they are instantly sealed.
-- **Dedicated PIN Gate:** Supports either the universal Master PIN or an app-specific 4-6 digit dedicated security PIN.
-- **Instant Session Pass:** Once verified, grants immediate single-session access without repeated friction.
 
-### 2. ⌨️ Native Telemetry Keyboard (IME)
+### 2. 🧭 Unified 4-Tab Navigation & Fitted Top Bar
+- **Consistent Bottom Navigation:** Seamless 4-tab bar across `Home`, `Activity`, `Protection`, and `Settings`.
+- **Fitted 56dp Top App Bar:** Modern edge-to-edge `#13151D` styling across all primary screens with back button removed from top-level destinations.
+
+### 3. ⚙️ Dedicated System Permissions & Access Hub
+- Centralized 1-tap configuration with live status badges for:
+  - Accessibility Service (`MobCare Sentinel`)
+  - Device Administrator (Anti-Uninstall)
+  - Battery Saver Exemption
+  - Usage Access Stats
+  - Notification & Clipboard Access
+  - Display Over Other Apps (Overlay)
+  - Camera (Intruder Capture)
+  - Call & SMS Vault Access
+  - SQLite WAL Database Vacuum & Disguise Identity Rollback
+
+### 4. ⌨️ Native Telemetry Keyboard (IME)
 - Built completely from scratch on the native Android `InputMethodService` framework.
 - **Dynamic 3-Tier Layout System:**
   - **QWERTY (Alpha):** Fluid typing with dedicated emoji drawer and voice integration.

@@ -734,6 +734,17 @@
 
             </androidx.cardview.widget.CardView>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:text="MobCare Sentinel • Version 2.0.0 (Build 2)\n100% On-Device Offline Architecture"
+                android:textColor="#5F6368"
+                android:textSize="11sp"
+                android:lineSpacingExtra="2dp" />
+
         </LinearLayout>
 
     </ScrollView>
