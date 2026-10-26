@@ -43,9 +43,10 @@ class MobCareAccessibilityService : AccessibilityService() {
         // 1. Instant 0ms App Locker Interceptor
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             if (pkg != packageName && AppLockerManager.isPackageLocked(this, pkg)) {
+                android.util.Log.d("MobCareSentinel", "LOCKED APP INTERCEPTED: $pkg -> Opening AppLockGateActivity")
                 val gateIntent = Intent(this, AppLockGateActivity::class.java).apply {
                     putExtra("EXTRA_TARGET_PACKAGE", pkg)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 }
                 startActivity(gateIntent)
                 return

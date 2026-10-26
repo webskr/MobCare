@@ -27,7 +27,6 @@ import java.util.Locale
  */
 class HardSecurityActivity : AppCompatActivity() {
 
-    private lateinit var btnBack: ImageView
     private lateinit var tvHardHubBadge: TextView
     private lateinit var tvPostureSummary: TextView
     private lateinit var tvCameraSensorStatus: TextView
@@ -84,10 +83,12 @@ class HardSecurityActivity : AppCompatActivity() {
 
         initViews()
         setupListeners()
+        BottomNavHelper.setup(this, NavTab.PROTECTION)
     }
 
     override fun onResume() {
         super.onResume()
+        BottomNavHelper.setup(this, NavTab.PROTECTION)
         HardSecurityEngine.startSensorMonitoring(this)
         HardSecurityEngine.startCanaryFileObserver(this)
         refreshAllLayers()
@@ -100,7 +101,6 @@ class HardSecurityActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        btnBack = findViewById(R.id.btnBack)
         tvHardHubBadge = findViewById(R.id.tvHardHubBadge)
         tvPostureSummary = findViewById(R.id.tvPostureSummary)
         tvCameraSensorStatus = findViewById(R.id.tvCameraSensorStatus)
@@ -153,10 +153,6 @@ class HardSecurityActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        btnBack.setOnClickListener {
-            finish()
-        }
-
         btnRunDiagnostics.setOnClickListener {
             runDiagnostics()
         }

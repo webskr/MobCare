@@ -62,11 +62,13 @@ class AppTimelineActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        BottomNavHelper.setup(this, NavTab.ACTIVITY)
         loadTimelineData()
     }
 
     override fun onResume() {
         super.onResume()
+        BottomNavHelper.setup(this, NavTab.ACTIVITY)
         checkPermissionState()
         loadTimelineData()
     }

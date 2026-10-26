@@ -25,7 +25,7 @@ class AppLockerWatchdogService : Service() {
         override fun run() {
             if (!isRunning) return
             checkForegroundApp()
-            workerHandler?.postDelayed(this, 800)
+            workerHandler?.postDelayed(this, 500)
         }
     }
 
@@ -68,13 +68,16 @@ class AppLockerWatchdogService : Service() {
             }
         }
 
-        if (currentPackage != null && currentPackage != packageName) {
-            if (currentPackage != lastCheckedPackage) {
+        if (currentPackage != null) {
+            if (currentPackage == packageName || currentPackage.contains("launcher", true)) {
+                lastCheckedPackage = ""
+            } else if (currentPackage != lastCheckedPackage) {
                 lastCheckedPackage = currentPackage
                 if (AppLockerManager.isPackageLocked(this, currentPackage)) {
+                    android.util.Log.d("AppLockerWatchdog", "WATCHDOG INTERCEPT: $currentPackage -> Starting gate")
                     val gateIntent = Intent(this, AppLockGateActivity::class.java).apply {
                         putExtra("EXTRA_TARGET_PACKAGE", currentPackage)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     }
                     startActivity(gateIntent)
                 }

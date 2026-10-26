@@ -234,23 +234,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, HardSecurityActivity::class.java))
         }
 
-        // Bottom Nav Actions
-        navHome.setOnClickListener {
-            updateHubOverview()
-            Toast.makeText(this, "Hub Overview Refreshed", Toast.LENGTH_SHORT).show()
-        }
-
-        navActivity.setOnClickListener {
-            startActivity(Intent(this, AppTimelineActivity::class.java))
-        }
-
-        navProtection.setOnClickListener {
-            startActivity(Intent(this, HardSecurityActivity::class.java))
-        }
-
-        navSettings.setOnClickListener {
-            startActivity(Intent(this, StealthSettingsActivity::class.java))
-        }
+        // Setup unified bottom navigation
+        BottomNavHelper.setup(this, NavTab.HOME)
 
         // Start App Locker Watchdog Service
         try {
@@ -271,6 +256,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        BottomNavHelper.setup(this, NavTab.HOME)
         updateHubOverview()
     }
 
@@ -438,12 +424,14 @@ class MainActivity : AppCompatActivity() {
 
         // 7. App Locker status
         val lockedCount = AppLockerManager.getLockedPackages(this).size
+        val isCrashMode = AppLockerManager.isAppCrashMode(this)
         if (lockedCount > 0) {
-            tvLockerCardBadge.text = "ARMED"
+            val crashTag = if (isCrashMode) " • Crash Decoy ON" else ""
+            tvLockerCardBadge.text = if (isCrashMode) "CRASH ON" else "ARMED"
             tvLockerCardBadge.setTextColor(Color.parseColor("#81C995"))
-            tvLockerCardSub.text = "Active • $lockedCount apps protected by Sentinel gate"
+            tvLockerCardSub.text = "Active • $lockedCount apps protected$crashTag"
         } else {
-            tvLockerCardBadge.text = "READY"
+            tvLockerCardBadge.text = if (isCrashMode) "CRASH READY" else "READY"
             tvLockerCardBadge.setTextColor(Color.parseColor("#8AB4F8"))
             tvLockerCardSub.text = "0 apps locked • Tap to configure 5-column app gate"
         }

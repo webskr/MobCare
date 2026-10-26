@@ -3,6 +3,12 @@ package com.mobcare.security
 import android.content.Context
 import android.content.SharedPreferences
 
+enum class PinVerifyStatus {
+    PRIMARY_SUCCESS,
+    DECOY_CRASH,
+    FAILED
+}
+
 object AppLockerManager {
 
     private const val PREF_NAME = "mobcare_app_locker"
@@ -10,6 +16,8 @@ object AppLockerManager {
     private const val KEY_LOCK_MODE = "lock_mode"
     private const val KEY_IS_ARMED = "is_armed"
     private const val KEY_CUSTOM_PIN = "custom_app_locker_pin"
+    private const val KEY_DECOY_PIN = "decoy_app_locker_pin"
+    private const val KEY_APP_CRASH_MODE = "app_crash_mode_enabled"
 
     const val MODE_ALWAYS_LOCKED = "ALWAYS_LOCKED"
     const val MODE_INTRUDER_TRIGGERED = "INTRUDER_TRIGGERED"
@@ -59,21 +67,45 @@ object AppLockerManager {
         getPrefs(context).edit().putString(KEY_LOCK_MODE, mode).apply()
     }
 
-    fun getCustomPin(context: Context): String? {
+    fun isAppCrashMode(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_APP_CRASH_MODE, false)
+    }
+
+    fun setAppCrashMode(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_APP_CRASH_MODE, enabled).apply()
+    }
+
+    fun getCustomPin(context: Context): String {
         val pin = getPrefs(context).getString(KEY_CUSTOM_PIN, null)
-        return if (!pin.isNullOrEmpty()) pin else null
+        return if (!pin.isNullOrEmpty()) pin else StealthManager.getMasterPin(context)
     }
 
     fun setCustomPin(context: Context, pin: String?) {
         getPrefs(context).edit().putString(KEY_CUSTOM_PIN, pin).apply()
     }
 
-    fun verifyPin(context: Context, entered: String): Boolean {
-        val customPin = getCustomPin(context)
-        if (customPin != null && entered == customPin) {
-            return true
+    fun getDecoyPin(context: Context): String {
+        val pin = getPrefs(context).getString(KEY_DECOY_PIN, null)
+        return if (!pin.isNullOrEmpty()) pin else StealthManager.getPanicPin(context)
+    }
+
+    fun setDecoyPin(context: Context, pin: String?) {
+        getPrefs(context).edit().putString(KEY_DECOY_PIN, pin).apply()
+    }
+
+    fun verifyPinWithDecoy(context: Context, entered: String): PinVerifyStatus {
+        val primaryPin = getCustomPin(context)
+        val decoyPin = getDecoyPin(context)
+
+        return when {
+            entered == primaryPin -> PinVerifyStatus.PRIMARY_SUCCESS
+            entered == decoyPin -> PinVerifyStatus.DECOY_CRASH
+            else -> PinVerifyStatus.FAILED
         }
-        return StealthManager.verifyPin(context, entered) || StealthManager.verifyPanicPin(context, entered)
+    }
+
+    fun verifyPin(context: Context, entered: String): Boolean {
+        return verifyPinWithDecoy(context, entered) == PinVerifyStatus.PRIMARY_SUCCESS
     }
 
     fun armIntruderLock(context: Context) {

@@ -1421,6 +1421,9 @@
         <activity
             android:name=".dashboard.StealthSettingsActivity"
             android:exported="false" />
+        <activity
+            android:name=".dashboard.SettingsActivity"
+            android:exported="false" />
 
         <!-- Notification Vault Listener Service -->
         <service

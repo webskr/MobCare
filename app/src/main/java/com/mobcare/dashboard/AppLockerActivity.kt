@@ -1,4 +1,4 @@
-﻿package com.mobcare.dashboard
+package com.mobcare.dashboard
 
 import android.app.Dialog
 import android.content.Intent
@@ -7,7 +7,10 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -25,14 +28,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobcare.R
 import com.mobcare.security.AppLockerManager
+import com.mobcare.security.AppLockerWatchdogService
+import com.mobcare.security.MobCareAccessibilityService
 
 class AppLockerActivity : AppCompatActivity() {
 
     private lateinit var tvLockerBadge: TextView
+    private lateinit var cardPermissionWarning: View
+    private lateinit var tvPermissionWarningTitle: TextView
+    private lateinit var tvPermissionWarningDesc: TextView
+    private lateinit var btnGrantRequiredPermission: Button
     private lateinit var btnModeAlways: Button
     private lateinit var btnModeIntruder: Button
     private lateinit var tvPinStatus: TextView
     private lateinit var btnCustomPin: Button
+    private lateinit var tvCrashModeSub: TextView
+    private lateinit var btnToggleCrashMode: Button
+    private lateinit var tvDecoyPinStatus: TextView
+    private lateinit var btnSetDecoyPin: Button
     private lateinit var etAppSearch: EditText
     private lateinit var tvProtectedCount: TextView
     private lateinit var btnClearAllLocks: Button
@@ -51,11 +64,20 @@ class AppLockerActivity : AppCompatActivity() {
         btnModeIntruder = findViewById(R.id.btnModeIntruder)
         tvPinStatus = findViewById(R.id.tvPinStatus)
         btnCustomPin = findViewById(R.id.btnCustomPin)
+        tvCrashModeSub = findViewById(R.id.tvCrashModeSub)
+        btnToggleCrashMode = findViewById(R.id.btnToggleCrashMode)
+        tvDecoyPinStatus = findViewById(R.id.tvDecoyPinStatus)
+        btnSetDecoyPin = findViewById(R.id.btnSetDecoyPin)
         etAppSearch = findViewById(R.id.etAppSearch)
         tvProtectedCount = findViewById(R.id.tvProtectedCount)
         btnClearAllLocks = findViewById(R.id.btnClearAllLocks)
         pbLoadingApps = findViewById(R.id.pbLoadingApps)
         rvAppsGrid = findViewById(R.id.rvAppsGrid)
+
+        cardPermissionWarning = findViewById(R.id.cardPermissionWarning)
+        tvPermissionWarningTitle = findViewById(R.id.tvPermissionWarningTitle)
+        tvPermissionWarningDesc = findViewById(R.id.tvPermissionWarningDesc)
+        btnGrantRequiredPermission = findViewById(R.id.btnGrantRequiredPermission)
 
         // Setup 5-Column Grid natively
         rvAppsGrid.layoutManager = GridLayoutManager(this, 5)
@@ -65,6 +87,13 @@ class AppLockerActivity : AppCompatActivity() {
             val currentlyLocked = AppLockerManager.getLockedPackages(this).contains(item.packageName)
             val newLockedState = !currentlyLocked
             AppLockerManager.setPackageLocked(this, item.packageName, newLockedState)
+            if (newLockedState) {
+                try {
+                    AppLockerWatchdogService.start(this)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
             adapter.notifyDataSetChanged()
             updateStats()
         }
@@ -82,6 +111,19 @@ class AppLockerActivity : AppCompatActivity() {
 
         btnCustomPin.setOnClickListener {
             showCustomPinDialog()
+        }
+
+        btnToggleCrashMode.setOnClickListener {
+            val isCrash = AppLockerManager.isAppCrashMode(this)
+            val newState = !isCrash
+            AppLockerManager.setAppCrashMode(this, newState)
+            updateCrashModeUi()
+            val msg = if (newState) "App Crash Mode Active: Locked apps simulate system crash!" else "App Crash Mode Disabled: Standard PIN gate active."
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        }
+
+        btnSetDecoyPin.setOnClickListener {
+            showDecoyPinDialog()
         }
 
         btnClearAllLocks.setOnClickListener {
@@ -105,6 +147,56 @@ class AppLockerActivity : AppCompatActivity() {
         loadInstalledAppsAsync()
         updateModeUi()
         updatePinStatus()
+        updateCrashModeUi()
+        checkRequiredPermissions()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkRequiredPermissions()
+        try {
+            if (AppLockerManager.getLockedPackages(this).isNotEmpty()) {
+                AppLockerWatchdogService.start(this)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkRequiredPermissions() {
+        val isAcc = MobCareAccessibilityService.instance != null
+        val canOverlay = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(this) else true
+
+        if (!isAcc) {
+            cardPermissionWarning.visibility = View.VISIBLE
+            tvPermissionWarningTitle.text = "Sentinel Accessibility Service Required"
+            tvPermissionWarningDesc.text = "Android requires 'MobCare Sentinel' in Accessibility Settings to detect when locked apps open and trigger the PIN lock or fake crash."
+            btnGrantRequiredPermission.text = "ENABLE IN ACCESSIBILITY SETTINGS"
+            btnGrantRequiredPermission.setOnClickListener {
+                try {
+                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Open Settings -> Accessibility -> MobCare Sentinel", Toast.LENGTH_LONG).show()
+                }
+            }
+        } else if (!canOverlay) {
+            cardPermissionWarning.visibility = View.VISIBLE
+            tvPermissionWarningTitle.text = "Display Over Other Apps Required"
+            tvPermissionWarningDesc.text = "MobCare needs overlay permission to display the PIN lock screen or fake crash dialog over protected apps."
+            btnGrantRequiredPermission.text = "GRANT OVERLAY PERMISSION"
+            btnGrantRequiredPermission.setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    try {
+                        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+                    }
+                }
+            }
+        } else {
+            cardPermissionWarning.visibility = View.GONE
+        }
     }
 
     private fun loadInstalledAppsAsync() {
@@ -309,6 +401,141 @@ class AppLockerActivity : AppCompatActivity() {
                     updatePinStatus()
                     dialog.dismiss()
                     Toast.makeText(this@AppLockerActivity, "Dedicated PIN saved", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@AppLockerActivity, "PIN must be at least 4 digits", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        btnRow.addView(btnReset)
+        btnRow.addView(btnSave)
+        root.addView(btnRow)
+
+        dialog.setContentView(root)
+        dialog.show()
+    }
+
+    private fun updateCrashModeUi() {
+        val isCrash = AppLockerManager.isAppCrashMode(this)
+        val decoyPin = AppLockerManager.getDecoyPin(this)
+
+        if (isCrash) {
+            btnToggleCrashMode.text = "CRASH ON"
+            btnToggleCrashMode.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1B3C2A"))
+            btnToggleCrashMode.setTextColor(Color.parseColor("#81C995"))
+            tvCrashModeSub.text = "Active • Locked apps simulate instant Android crash dialog"
+            tvCrashModeSub.setTextColor(Color.parseColor("#81C995"))
+        } else {
+            btnToggleCrashMode.text = "CRASH OFF"
+            btnToggleCrashMode.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#26272E"))
+            btnToggleCrashMode.setTextColor(Color.parseColor("#9AA0A6"))
+            tvCrashModeSub.text = "Disabled • Standard PIN security gate active"
+            tvCrashModeSub.setTextColor(Color.parseColor("#9AA0A6"))
+        }
+
+        tvDecoyPinStatus.text = "Decoy PIN ($decoyPin) • Simulates crash and snaps photo upon entry"
+    }
+
+    private fun showDecoyPinDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val density = resources.displayMetrics.density
+
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding((24 * density).toInt(), (22 * density).toInt(), (24 * density).toInt(), (22 * density).toInt())
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 18f * density
+                setColor(Color.parseColor("#1E1F24"))
+                setStroke((1 * density).toInt(), Color.parseColor("#2B2C33"))
+            }
+        }
+
+        val titleTv = TextView(this).apply {
+            text = "Decoy Panic PIN Setup"
+            setTextColor(Color.parseColor("#F1F3F4"))
+            textSize = 17f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setPadding(0, 0, 0, (6 * density).toInt())
+        }
+        root.addView(titleTv)
+
+        val subTv = TextView(this).apply {
+            text = "Entering this PIN on a locked app secretly snaps an intruder photo and displays an authentic Android system crash."
+            setTextColor(Color.parseColor("#9AA0A6"))
+            textSize = 12f
+            setPadding(0, 0, 0, (14 * density).toInt())
+        }
+        root.addView(subTv)
+
+        val pinInput = EditText(this).apply {
+            hint = "Decoy PIN (e.g. 0000)"
+            setHintTextColor(Color.parseColor("#5F6368"))
+            setTextColor(Color.parseColor("#FFFFFF"))
+            inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            textSize = 20f
+            gravity = Gravity.CENTER
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 12f * density
+                setColor(Color.parseColor("#121316"))
+                setStroke((1.5f * density).toInt(), Color.parseColor("#3C4043"))
+            }
+            setPadding((16 * density).toInt(), (12 * density).toInt(), (16 * density).toInt(), (12 * density).toInt())
+        }
+        root.addView(pinInput)
+
+        val btnRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.END
+            setPadding(0, (18 * density).toInt(), 0, 0)
+        }
+
+        val btnReset = Button(this).apply {
+            text = "Default (0000)"
+            setTextColor(Color.parseColor("#FDD663"))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 10f * density
+                setColor(Color.parseColor("#2B2516"))
+                setStroke((1 * density).toInt(), Color.parseColor("#483D1B"))
+            }
+            setPadding((14 * density).toInt(), (8 * density).toInt(), (14 * density).toInt(), (8 * density).toInt())
+            setOnClickListener {
+                AppLockerManager.setDecoyPin(this@AppLockerActivity, "0000")
+                updateCrashModeUi()
+                dialog.dismiss()
+                Toast.makeText(this@AppLockerActivity, "Decoy PIN reset to default (0000)", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val btnSave = Button(this).apply {
+            text = "Save Decoy"
+            setTextColor(Color.parseColor("#121316"))
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = 10f * density
+                setColor(Color.parseColor("#FDD663"))
+            }
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = (10 * density).toInt()
+            }
+            layoutParams = params
+            setPadding((18 * density).toInt(), (8 * density).toInt(), (18 * density).toInt(), (8 * density).toInt())
+            setOnClickListener {
+                val entered = pinInput.text.toString().trim()
+                if (entered.length >= 4) {
+                    AppLockerManager.setDecoyPin(this@AppLockerActivity, entered)
+                    updateCrashModeUi()
+                    dialog.dismiss()
+                    Toast.makeText(this@AppLockerActivity, "Decoy PIN configured successfully", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@AppLockerActivity, "PIN must be at least 4 digits", Toast.LENGTH_SHORT).show()
                 }

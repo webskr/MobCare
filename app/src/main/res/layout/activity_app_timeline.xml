@@ -1,121 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121316"
-    android:fillViewport="true">
+    android:background="#0B0D13"
+    android:orientation="vertical">
 
+    <!-- Fitted Top Toolbar (Unified across primary tabs) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="28dp"
-        android:paddingBottom="36dp">
+        android:layout_height="56dp"
+        android:background="#13151D"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
 
-        <!-- Top Header -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="6dp">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="App &amp; Chat Timeline"
-                android:textColor="#F1F3F4"
-                android:textSize="24sp"
+                android:textColor="#ECEEF4"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium" />
 
             <TextView
-                android:id="@+id/tvTimelineBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_pill_button"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:text="ACTIVE"
-                android:textColor="#81C995"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:text="Screen time, app launch history &amp; keystrokes"
+                android:textColor="#7A7F8E"
+                android:textSize="11sp" />
+
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvTimelineBadge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Real-time screen usage, launch history, and app-specific keystroke transcripts."
-            android:textColor="#9AA0A6"
-            android:textSize="13sp"
-            android:layout_marginBottom="20dp" />
+            android:background="@drawable/bg_badge_green"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="ACTIVE"
+            android:textColor="#4CAF50"
+            android:textSize="10.5sp"
+            android:textStyle="bold" />
 
-        <!-- Usage Permission Banner -->
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
         <LinearLayout
-            android:id="@+id/bannerUsagePermission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_pill_button">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Usage Access Permission Required"
-                android:textColor="#FDD663"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="4dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Grant Usage Access in Android Settings to calculate exact screen time and launch frequencies for all applications."
-                android:textColor="#9AA0A6"
-                android:textSize="12sp"
-                android:lineSpacingExtra="2dp"
-                android:layout_marginBottom="12dp" />
-
-            <Button
-                android:id="@+id/btnGrantUsage"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Grant Usage Access"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:backgroundTint="#FDD663"
-                android:textColor="#121316" />
-        </LinearLayout>
-
-        <!-- Search Bar -->
-        <EditText
-            android:id="@+id/etTimelineSearch"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:hint="Search application or typed text..."
-            android:textColorHint="#5F6368"
-            android:textColor="#E8EAED"
-            android:textSize="14sp"
-            android:background="@drawable/bg_pill_button"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:singleLine="true" />
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
 
-        <!-- App Timeline Container -->
-        <LinearLayout
-            android:id="@+id/llTimelineContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            <!-- Usage Permission Banner -->
+            <LinearLayout
+                android:id="@+id/bannerUsagePermission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_section_card">
 
-    </LinearLayout>
-</ScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Usage Access Permission Required"
+                    android:textColor="#FDD663"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grant Usage Access in Android Settings to calculate exact screen time and launch frequencies for all applications."
+                    android:textColor="#9AA0A6"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="2dp"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnGrantUsage"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="Grant Usage Access"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#FDD663"
+                    android:textColor="#121316" />
+            </LinearLayout>
+
+            <!-- Search Bar -->
+            <EditText
+                android:id="@+id/etTimelineSearch"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:hint="Search application or typed text..."
+                android:textColorHint="#5F6368"
+                android:textColor="#E8EAED"
+                android:textSize="13.5sp"
+                android:background="@drawable/bg_card_outlined"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:singleLine="true" />
+
+            <!-- App Timeline Container -->
+            <LinearLayout
+                android:id="@+id/llTimelineContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Navigation Bar (Include) -->
+    <include layout="@layout/layout_bottom_nav" />
+
+</LinearLayout>

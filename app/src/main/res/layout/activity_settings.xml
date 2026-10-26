@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0B0D13"
+    android:orientation="vertical">
+
+    <!-- Fitted Top Toolbar (Unified across primary tabs) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#13151D"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Settings &amp; Permissions"
+                android:textColor="#ECEEF4"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Master Permissions Hub &amp; Core Security"
+                android:textColor="#7A7F8E"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSettingsHubBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_green"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="OPTIMAL"
+            android:textColor="#4CAF50"
+            android:textSize="10.5sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Main Content Area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="24dp">
+
+            <!-- MASTER SYSTEM PERMISSIONS & ACCESS HUB -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#13151D">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Header Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="6dp">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_shield_check"
+                            android:tint="#8AB4F8"
+                            android:layout_marginEnd="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="System Permissions &amp; Access Hub"
+                                android:textColor="#ECEEF4"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Central control for all required Android OS privileges"
+                                android:textColor="#7A7F8E"
+                                android:textSize="11sp"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvMasterPermsBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_badge_green"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:text="0/9 GRANTED"
+                            android:textColor="#4CAF50"
+                            android:textSize="10.5sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tap any module below to grant or configure system-level security access directly."
+                        android:textColor="#9AA0A6"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- 1. Accessibility Service -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Accessibility Service (Sentinel)"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermAccessibilityBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Real-time window tracking, app locker enforcement &amp; browser intelligence."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermAccessibility"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Configure Accessibility"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 2. Device Administrator -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Device Administrator"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermDeviceAdminBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Guards against unauthorized uninstallation and prevents tampering with security settings."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermDeviceAdmin"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Activate Device Administrator"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 3. Battery Optimization Exemption -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Battery Optimization Exemption"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermBatteryBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prevents Android from freezing background protection services and watchdogs."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermBattery"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Exempt from Battery Saver"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 4. Usage Access Stats -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Usage Access Stats"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermUsageStatsBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Allows MobCare to track screen time, app session intervals &amp; App Locker watchdog."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermUsageStats"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Grant Usage Access"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 5. Notification & Clipboard Listener -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Notification &amp; Clipboard Access"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermNotificationBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Captures incoming alert summaries, OTPs and clipboard ledger into encrypted vault."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermNotification"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Grant Notification Access"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 6. Camera Permission -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Camera (Intruder Snapshot)"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermCameraBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Takes silent camera snaps upon incorrect PIN or decoy panic trigger."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermCamera"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Grant Camera Permission"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 7. Calls & SMS Permission -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Phone Calls &amp; SMS Ledger"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermCallSmsBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Enables Call &amp; SMS timeline archiving into encrypted local SQLite storage."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermCallSms"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Grant Call &amp; SMS Permissions"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <!-- 8. Overlay Permission -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#1A1D27"
+                        android:padding="12dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="System Alert Overlay"
+                                android:textColor="#ECEEF4"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvPermOverlayMasterBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_blue_dark"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"
+                                android:text="REQUIRED"
+                                android:textColor="#FDD663"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Required to draw PIN lock gates and decoy crash screens immediately over protected apps."
+                            android:textColor="#7A7F8E"
+                            android:textSize="11sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <Button
+                            android:id="@+id/btnPermOverlay"
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:text="Grant Overlay Permission"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:backgroundTint="#26272E"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- DATABASE & SYSTEM INTEGRITY PREFERENCES -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#13151D">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Database &amp; Storage Reliability"
+                        android:textColor="#ECEEF4"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zero-Wipe Guarantee • SQLite WAL Active • TEE AES-256"
+                        android:textColor="#81C995"
+                        android:textSize="11sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/btnVacuumDatabase"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="VACUUM &amp; OPTIMIZE DATABASE"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="#1F2330"
+                        android:textColor="#8AB4F8" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- IDENTITY & CONFIGURATION ROLLBACK -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#13151D">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Configuration &amp; Identity Rollback"
+                        android:textColor="#ECEEF4"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="One-tap reset of disguise icon, decoy name and alias mappings back to pristine defaults."
+                        android:textColor="#7A7F8E"
+                        android:textSize="11.5sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/btnResetIdentity"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text="RESTORE ORIGINAL IDENTITY &amp; ICON"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="#3B1C1D"
+                        android:textColor="#F28B82" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Navigation Bar (Include) -->
+    <include layout="@layout/layout_bottom_nav" />
+
+</LinearLayout>
